@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_it/src/constants/app_strings.dart';
 
 class MyHomeScreen extends StatefulWidget {
   MyHomeScreen({Key key, this.title}) : super(key: key);
@@ -33,18 +34,15 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
+              AppStrings.noNotes,
               style: Theme.of(context).textTheme.display1,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: (){},
+        tooltip: 'Add Note',
         child: Icon(Icons.add),
       ),
     );
