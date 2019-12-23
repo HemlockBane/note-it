@@ -9,11 +9,11 @@ class MyHomeScreen extends StatefulWidget {
   _MyHomeScreenState createState() => _MyHomeScreenState();
 }
 class _MyHomeScreenState extends State<MyHomeScreen> {
-  int _counter = 0;
+  int _currentTabIndex = 0;
 
-  void _incrementCounter() {
+  void _changeTab(int nextTabIndex) {
     setState(() {
-      _counter++;
+      _currentTabIndex = nextTabIndex;
     });
   }
 
@@ -22,6 +22,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(icon: Icon(Icons.search), onPressed: (){}),
           IconButton(icon: Icon(Icons.more_vert), onPressed: (){}),
@@ -29,18 +30,44 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         ],
       ),
       drawer: Drawer(),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentTabIndex,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        onTap: (newTabIndex){
+          _changeTab(newTabIndex);
+        },
+        //type: BottomNavigationBarType.shifting,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            title: Text('Notes'),
+            backgroundColor: Colors.black
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            title: Text('Favourites'),
+            backgroundColor: Colors.blue
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.label),
+            title: Text('Tags')
+          ),
+        ]
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
               AppStrings.noNotes,
-              style: Theme.of(context).textTheme.display1,
+              style: Theme.of(context).textTheme.display1.copyWith(fontSize: 14),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).accentColor,
         onPressed: (){},
         tooltip: 'Add Note',
         child: Icon(Icons.add),
