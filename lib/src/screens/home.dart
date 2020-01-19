@@ -8,6 +8,7 @@ class MyHomeScreen extends StatefulWidget {
   @override
   _MyHomeScreenState createState() => _MyHomeScreenState();
 }
+
 class _MyHomeScreenState extends State<MyHomeScreen> {
   int _currentTabIndex = 0;
 
@@ -24,36 +25,39 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         title: Text(widget.title),
         centerTitle: true,
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: (){}),
-          IconButton(icon: Icon(Icons.more_vert), onPressed: (){}),
-
+          IconButton(icon: Icon(Icons.search), onPressed: () {}),
+          IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
         ],
       ),
       drawer: Drawer(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentTabIndex,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        onTap: (newTabIndex){
-          _changeTab(newTabIndex);
-        },
-        //type: BottomNavigationBarType.shifting,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            title: Text('Notes'),
-            backgroundColor: Colors.black
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            title: Text('Favourites'),
-            backgroundColor: Colors.blue
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.label),
-            title: Text('Tags')
-          ),
-        ]
+//      bottomNavigationBar: BottomNavigationBar(
+//        currentIndex: _currentTabIndex,
+//        selectedItemColor: Colors.black,
+//        unselectedItemColor: Colors.grey,
+//        onTap: (newTabIndex){
+//          _changeTab(newTabIndex);
+//        },
+//        //type: BottomNavigationBarType.shifting,
+//        items: [
+//          BottomNavigationBarItem(
+//            icon: Icon(Icons.book),
+//            title: Text('Notes'),
+//            backgroundColor: Colors.black
+//          ),
+//          BottomNavigationBarItem(
+//            icon: Icon(Icons.star),
+//            title: Text('Favourites'),
+//            backgroundColor: Colors.blue
+//          ),
+//          BottomNavigationBarItem(
+//            icon: Icon(Icons.label),
+//            title: Text('Tags')
+//          ),
+//        ]
+//      ),
+
+      bottomNavigationBar: BottomAppBar(
+        color: ,
       ),
       body: Center(
         child: Column(
@@ -68,11 +72,10 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).accentColor,
-        onPressed: (){},
+        onPressed: () {},
         tooltip: 'Add Note',
         child: Icon(Icons.add),
       ),
     );
   }
 }
-
