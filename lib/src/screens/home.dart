@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/constants/app_strings.dart';
+import 'package:note_it/src/widgets/bottom_app_bar.dart';
 
 class MyHomeScreen extends StatefulWidget {
   MyHomeScreen({Key key, this.title}) : super(key: key);
@@ -30,34 +31,13 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         ],
       ),
       drawer: Drawer(),
-//      bottomNavigationBar: BottomNavigationBar(
-//        currentIndex: _currentTabIndex,
-//        selectedItemColor: Colors.black,
-//        unselectedItemColor: Colors.grey,
-//        onTap: (newTabIndex){
-//          _changeTab(newTabIndex);
-//        },
-//        //type: BottomNavigationBarType.shifting,
-//        items: [
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.book),
-//            title: Text('Notes'),
-//            backgroundColor: Colors.black
-//          ),
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.star),
-//            title: Text('Favourites'),
-//            backgroundColor: Colors.blue
-//          ),
-//          BottomNavigationBarItem(
-//            icon: Icon(Icons.label),
-//            title: Text('Tags')
-//          ),
-//        ]
-//      ),
-
-      bottomNavigationBar: BottomAppBar(
-        color: ,
+      bottomNavigationBar: AppBottomNavigationBar(
+        onTabSelected: _changeTab,
+        items: [
+          AppBottomNavigationBarItem(iconData: Icons.book, text: 'Notes'),
+          AppBottomNavigationBarItem(iconData: Icons.star, text: 'Favourites'),
+          AppBottomNavigationBarItem(iconData: Icons.label, text: 'Tags')
+        ],
       ),
       body: Center(
         child: Column(
