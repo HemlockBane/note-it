@@ -1,10 +1,10 @@
 class Note {
   Note(
-      {this.title = 'Title',
+      {this.title = 'A note on colonisation',
       this.content =
-          'Colonial Masters decided to colonise... What the hell am I saying?',
+          'Colonial Masters decided to colonise. What the hell am I saying?',
       this.date = '21st Nov 2020 at 21:15',
-      this.tagName = 'Tag'});
+      this.tagName = 'Exam'});
 
   final String title;
   final String content;

@@ -36,12 +36,13 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       body: getDummyNotes().isEmpty
           ? _noNotesInfo(context: context)
           : Container(
-              margin: EdgeInsets.symmetric(horizontal: 15),
-              child: ListView.builder(
+              // margin: EdgeInsets.symmetric(horizontal: 15),
+              child: ListView.separated(
                 itemCount: getDummyNotes().length,
+                separatorBuilder: (context, index) => Divider(),
                 itemBuilder: (context, index) {
                   Note note = getDummyNotes()[index];
-                  return NoteCard(
+                  return NoteListTile(
                     note: note,
                   );
                 },
@@ -79,35 +80,59 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   }
 }
 
-class NoteCard extends StatelessWidget {
-  Note note;
-  NoteCard({this.note});
+class NoteListTile extends StatelessWidget {
+  final Note note;
+
+  NoteListTile({this.note});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-              margin: EdgeInsets.only(bottom: 5), child: Text(note.title)),
-          Container(
-            margin: EdgeInsets.only(bottom: 5),
-            child: Text(note.content),
-          ),
-          Container(margin: EdgeInsets.only(bottom: 5), child: Text(note.date)),
-          Row(
-            children: <Widget>[
-              Container(
-                color: Colors.black,
-                child: Text(
-                  note.tagName,
-                  style: TextStyle(color: Colors.white),
-                ),
-              )
-            ],
-          )
-        ],
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(bottom: 5),
+              child: Text(
+                note.title,
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 5),
+              child: Text(
+                note.content,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 14),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 5),
+              child: Text(
+                note.date,
+                style: TextStyle(fontSize: 11),
+              ),
+            ),
+            Row(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 7, vertical: 1),
+                   decoration: BoxDecoration(
+                    color: Colors.black, borderRadius: BorderRadius.all(Radius.circular(4))
+                  ),
+                  child: Text(
+                    note.tagName,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
