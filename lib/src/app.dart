@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_it/src/screens/edit_note.dart';
 import 'package:note_it/src/screens/home.dart';
 import 'package:note_it/src/widgets/theme.dart';
 
@@ -9,7 +10,10 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme().lightTheme,
-      home: MyHomeScreen(title: 'Flutter Demo Home Page'),
+      home: MyHomeScreen(title: 'Note it'),
+      routes: {
+        EditNoteScreen.routeName: (BuildContext context) => EditNoteScreen()
+      },
     );
   }
 }

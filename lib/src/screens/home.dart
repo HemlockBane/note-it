@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
+import 'package:note_it/src/screens/edit_note.dart';
 import 'package:note_it/src/widgets/bottom_app_bar.dart';
 
 class MyHomeScreen extends StatefulWidget {
@@ -88,7 +89,9 @@ class NoteListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, EditNoteScreen.routeName);
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         child: Column(
@@ -121,9 +124,9 @@ class NoteListTile extends StatelessWidget {
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 7, vertical: 1),
-                   decoration: BoxDecoration(
-                    color: Colors.black, borderRadius: BorderRadius.all(Radius.circular(4))
-                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
                   child: Text(
                     note.tagName,
                     style: TextStyle(color: Colors.white),
