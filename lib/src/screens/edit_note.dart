@@ -24,10 +24,15 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
           child: Column(
             children: <Widget>[
               TextField(
+                style: TextStyle(fontSize: 30),
                 decoration: InputDecoration(
+                  hintText: 'Title',
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 8),
+                  fillColor: Colors.amber,
+                  isDense: true, // Makes text field compact
                 ),
               ),
               Divider(),
