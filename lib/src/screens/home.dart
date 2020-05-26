@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
-import 'package:note_it/src/screens/edit_note.dart';
+import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/widgets/bottom_app_bar.dart';
 
 class MyHomeScreen extends StatefulWidget {
@@ -45,6 +45,9 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                   Note note = getDummyNotes()[index];
                   return NoteListTile(
                     note: note,
+                    onNoteTapped: () {
+                      _goToViewNoteScreen(note: note);
+                    },
                   );
                 },
               ),
@@ -59,7 +62,9 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).accentColor,
-        onPressed: () {},
+        onPressed: () {
+          _goToViewNoteScreen(note: Note());
+        },
         tooltip: 'Add Note',
         child: Icon(Icons.add),
       ),
@@ -79,18 +84,28 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       ),
     );
   }
+
+  void _goToViewNoteScreen({Note note}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return ViewNoteScreen(note: note);
+      }),
+    );
+  }
 }
 
 class NoteListTile extends StatelessWidget {
   final Note note;
+  final VoidCallback onNoteTapped;
 
-  NoteListTile({this.note});
+  NoteListTile({this.note, this.onNoteTapped});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, EditNoteScreen.routeName);
+        onNoteTapped();
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),

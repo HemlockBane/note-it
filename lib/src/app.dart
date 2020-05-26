@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:note_it/src/screens/edit_note.dart';
 import 'package:note_it/src/screens/home.dart';
+import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/widgets/theme.dart';
+
+import 'models/note.dart';
 
 class App extends StatelessWidget {
   // This widget is the root of your application.
@@ -12,7 +14,7 @@ class App extends StatelessWidget {
       theme: AppTheme().lightTheme,
       home: MyHomeScreen(title: 'Note it'),
       routes: {
-        EditNoteScreen.routeName: (BuildContext context) => EditNoteScreen()
+        // ViewNoteScreen.routeName: (BuildContext context) => ViewNoteScreen(note: Note(),)
       },
     );
   }

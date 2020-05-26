@@ -1,17 +1,21 @@
 class Note {
-  Note(
+  String title = '';
+  String content = '';
+  String date = DateTime.now().toIso8601String();
+  String tagName = '';
+
+  bool get isEmpty => this.title.isEmpty && this.content.isEmpty;
+
+  Note();
+
+  Note.dummy(
       {this.title = 'A note on colonisation',
       this.content =
           'Colonial Masters decided to colonise. What the hell am I saying?',
-      this.date = '21st Nov 2020 at 21:15',
-      this.tagName = 'Exam'});
-
-  final String title;
-  final String content;
-  final String date;
-  final String tagName;
+      this.tagName = 'Exam'})
+      : this.date = DateTime.now().toIso8601String();
 }
 
 List<Note> getDummyNotes() {
-  return List.generate(10, (_) => Note());
+  return List.generate(10, (_) => Note.dummy());
 }
