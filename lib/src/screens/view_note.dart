@@ -17,6 +17,8 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
 
   TextEditingController _titleController;
   TextEditingController _contentController;
+  FocusNode _titleFocusNode;
+  FocusNode _contentFocusNode;
 
   @override
   void initState() {
@@ -24,12 +26,22 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     note = widget.note;
     _titleController = TextEditingController(text: note.title);
     _contentController = TextEditingController(text: note.content);
-    _pageMode = note.isEmpty ? PageMode.edit : PageMode.view;
+    _titleFocusNode = FocusNode();
+    _contentFocusNode = FocusNode();
+    _pageMode = note.isNew ? PageMode.edit : PageMode.view;
+    //focusOn(focusNode: _titleFocusNode);
+  }
+
+  @override
+  void dispose() {
+    _titleFocusNode.dispose();
+    _contentFocusNode.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(note.isEmpty);
+    print(note.isNew);
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
@@ -60,7 +72,8 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
               Divider(),
               Container(
                 margin: EdgeInsets.only(bottom: 10),
-                child: Row( // TODO: Maybe we should use a TextSpan instead?
+                child: Row(
+                  // TODO: Maybe we should use a TextSpan instead?
                   children: <Widget>[
                     Text('${beautifyDate(note.dateCreated)}\t'),
                     // SizedBox(
@@ -89,6 +102,10 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
         ),
       ),
     );
+  }
+
+  void focusOn({FocusNode focusNode}) {
+    focusNode.requestFocus();
   }
 }
 

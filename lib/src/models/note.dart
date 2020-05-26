@@ -6,7 +6,7 @@ class Note {
   String dateCreated = DateTime.now().toIso8601String();
   String tagName = '';
 
-  bool get isEmpty => this.title.isEmpty && this.content.isEmpty;
+  bool get isNew => this.title.isEmpty && this.content.isEmpty;
 
   Note();
 
