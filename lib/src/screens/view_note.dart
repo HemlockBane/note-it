@@ -61,19 +61,24 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
                 margin: EdgeInsets.only(bottom: 10),
                 child: Row(
                   children: <Widget>[
-                    Text('21 May 2020'),
-                    SizedBox(
-                      width: 30,
+                    Expanded(
+                      child: Text(note.date),
                     ),
-                    Text('19: 49')
+                    // SizedBox(
+                    //   width: 30,
+                    // ),
+                    Expanded(
+                      child: Text(note.date),
+                    )
                   ],
                 ),
               ),
               TextField(
                 controller: _contentController,
-                maxLines: null, 
+                maxLines: null,
                 style: TextStyle(fontSize: 18),
                 decoration: InputDecoration(
+                  hintText: 'Body',
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
