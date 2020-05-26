@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/models/note.dart';
+import 'package:note_it/src/services/utils.dart';
 
 class ViewNoteScreen extends StatefulWidget {
   static final String routeName = 'view_note';
@@ -59,17 +60,13 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
               Divider(),
               Container(
                 margin: EdgeInsets.only(bottom: 10),
-                child: Row(
+                child: Row( // TODO: Maybe we should use a TextSpan instead?
                   children: <Widget>[
-                    Expanded(
-                      child: Text(note.date),
-                    ),
+                    Text('${beautifyDate(note.dateCreated)}\t'),
                     // SizedBox(
                     //   width: 30,
                     // ),
-                    Expanded(
-                      child: Text(note.date),
-                    )
+                    Text('\t${beautifyTime(note.dateCreated)}')
                   ],
                 ),
               ),

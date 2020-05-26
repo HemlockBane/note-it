@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/screens/view_note.dart';
+import 'package:note_it/src/services/utils.dart';
 import 'package:note_it/src/widgets/bottom_app_bar.dart';
 
 class MyHomeScreen extends StatefulWidget {
@@ -131,7 +132,7 @@ class NoteListTile extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(bottom: 5),
               child: Text(
-                note.date,
+                '${beautifyDate(note.dateCreated)} at ${beautifyTime(note.dateCreated)}',
                 style: TextStyle(fontSize: 11),
               ),
             ),
