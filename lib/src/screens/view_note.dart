@@ -57,17 +57,17 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
           // print('content focus: ${_contentFocusNode.hasFocus}');
           // print('content primary focus: ${_contentFocusNode.hasPrimaryFocus}');
 
-
-          if(!_isEditing) {
+          if (!_isEditing) {
             return true; // Pop screen if in view mode
           }
 
           if (_isEditing) {
-            FocusScope.of(context).requestFocus(FocusNode()); // Unfocus from textfields
+            FocusScope.of(context)
+                .requestFocus(FocusNode()); // Unfocus from textfields
             setState(() {
               _pageMode = PageMode.view;
             });
-          } 
+          }
 
           return false;
         },
@@ -80,6 +80,9 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
                   controller: _titleController,
                   autofocus: note.isNew,
                   focusNode: _titleFocusNode,
+                  onTap: () {
+                    _startEditingIfViewing();
+                  },
                   // onEditingComplete: (){},
                   // onSubmitted: (value){},
                   style: TextStyle(fontSize: 30),
@@ -107,7 +110,9 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
                   ),
                 ),
                 TextField(
-                  onTap: () {},
+                  onTap: () {
+                    _startEditingIfViewing();
+                  },
                   controller: _contentController,
                   focusNode: _contentFocusNode,
                   maxLines: null, // Makes text to wrap to next line
@@ -130,6 +135,13 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     );
   }
 
+  void _startEditingIfViewing() {
+    if (!_isEditing) {
+      setState(() {
+        _pageMode = PageMode.edit;
+      });
+    }
+  }
 
   bool get _isEditing => _pageMode == PageMode.edit;
 }
