@@ -153,7 +153,7 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
         // print('Is new note: $_isNewNote');
         print('Added note...');
 
-        // _noteNotifier.addNote(_note);
+        _noteNotifier.addNote(_note);
       }
 
       if (!_isNewNote) {
