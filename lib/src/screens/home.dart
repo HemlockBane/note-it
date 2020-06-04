@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
+import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/services/utils.dart';
 import 'package:note_it/src/widgets/bottom_app_bar.dart';
+import 'package:provider/provider.dart';
 
 class MyHomeScreen extends StatefulWidget {
   MyHomeScreen({Key key, this.title}) : super(key: key);
@@ -15,12 +17,6 @@ class MyHomeScreen extends StatefulWidget {
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
   int _currentTabIndex = 0;
-
-  void _changeTab(int nextTabIndex) {
-    setState(() {
-      _currentTabIndex = nextTabIndex;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,24 +31,29 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         ],
       ),
       // drawer: Drawer(),
-      body: getDummyNotes().isEmpty
-          ? _noNotesInfo(context: context)
-          : Container(
-              // margin: EdgeInsets.symmetric(horizontal: 15),
-              child: ListView.separated(
-                itemCount: getDummyNotes().length,
-                separatorBuilder: (context, index) => Divider(),
-                itemBuilder: (context, index) {
-                  Note note = getDummyNotes()[index];
-                  return NoteListTile(
-                    note: note,
-                    onNoteTapped: () {
-                      _goToViewNoteScreen(note: note);
+      body: Consumer<NoteNotifier>(
+        builder: (context, noteNotifier, _) {
+          return noteNotifier.notes.isEmpty
+              ? _noNotesInfo(context: context)
+              : Container(
+                  // margin: EdgeInsets.symmetric(horizontal: 15),
+                  child: ListView.separated(
+                    itemCount: noteNotifier.notes.length,
+                    separatorBuilder: (context, index) => Divider(),
+                    itemBuilder: (context, index) {
+                      Note note = noteNotifier.notes[index];
+
+                      return NoteListTile(
+                        note: note,
+                        onNoteTapped: () {
+                          _goToViewNoteScreen(note: note);
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-            ),
+                  ),
+                );
+        },
+      ),
       bottomNavigationBar: AppBottomNavigationBar(
         onTabSelected: _changeTab,
         items: [
@@ -64,7 +65,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).accentColor,
         onPressed: () {
-          _goToViewNoteScreen(note: Note());
+          _goToViewNoteScreen(note: Note(), isNewNote: true);
         },
         tooltip: 'Add Note',
         child: Icon(Icons.add),
@@ -86,11 +87,21 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     );
   }
 
-  void _goToViewNoteScreen({Note note}) {
+  void _changeTab(int nextTabIndex) {
+    setState(() {
+      _currentTabIndex = nextTabIndex;
+    });
+  }
+
+  void _goToViewNoteScreen({Note note, bool isNewNote = false}) {
+    print(note.title);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
-        return ViewNoteScreen(note: note);
+        return ViewNoteScreen(
+          note: note,
+          isNewNote: isNewNote,
+        );
       }),
     );
   }

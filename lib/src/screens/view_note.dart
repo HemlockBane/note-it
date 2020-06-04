@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/models/note.dart';
+import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/services/utils.dart';
 
 class ViewNoteScreen extends StatefulWidget {
   static final String routeName = 'view_note';
   final Note note;
+  final bool isNewNote;
 
-  ViewNoteScreen({this.note});
+  ViewNoteScreen({this.note, this.isNewNote = false});
   @override
   _ViewNoteScreenState createState() => _ViewNoteScreenState();
 }
 
 class _ViewNoteScreenState extends State<ViewNoteScreen> {
-  Note note;
+  Note _note;
+  bool _isNewNote;
   PageMode _pageMode;
 
   TextEditingController _titleController;
@@ -20,29 +23,37 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
   FocusNode _titleFocusNode;
   FocusNode _contentFocusNode;
 
+  NoteNotifier _noteNotifier;
+
   @override
   void initState() {
     super.initState();
-    note = widget.note;
-    _titleController = TextEditingController(text: note.title);
-    _contentController = TextEditingController(text: note.content);
+    _note = widget.note;
+    _isNewNote = widget.isNewNote;
+    _titleController = TextEditingController(text: _note.title);
+    _contentController = TextEditingController(text: _note.content);
     _titleFocusNode = FocusNode();
     _contentFocusNode = FocusNode();
-    _pageMode = note.isNew ? PageMode.edit : PageMode.view;
+    _pageMode = _isNewNote ? PageMode.edit : PageMode.view;
+
+    // print(widget.note.title);
   }
 
   @override
   void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    _noteNotifier = NoteNotifier.of(context);
     // print(note.isNew);
-    print(_pageMode);
+    // print(_pageMode);
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? 'Editing' : 'Viewing'),
+        title: Text(_isInEditMode ? 'Editing' : 'Viewing'),
         actions: <Widget>[
           IconButton(
             onPressed: () {},
@@ -51,26 +62,7 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
         ],
       ),
       body: WillPopScope(
-        onWillPop: () async {
-          // print('title focus: ${_titleFocusNode.hasFocus}');
-          // print('title primary focus: ${_titleFocusNode.hasPrimaryFocus}');
-          // print('content focus: ${_contentFocusNode.hasFocus}');
-          // print('content primary focus: ${_contentFocusNode.hasPrimaryFocus}');
-
-          if (!_isEditing) {
-            return true; // Pop screen if in view mode
-          }
-
-          if (_isEditing) {
-            FocusScope.of(context)
-                .requestFocus(FocusNode()); // Unfocus from textfields
-            setState(() {
-              _pageMode = PageMode.view;
-            });
-          }
-
-          return false;
-        },
+        onWillPop: _handleWillPop,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: SingleChildScrollView(
@@ -78,7 +70,7 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
               children: <Widget>[
                 TextField(
                   controller: _titleController,
-                  autofocus: note.isNew,
+                  autofocus: _isNewNote,
                   focusNode: _titleFocusNode,
                   onTap: () {
                     _startEditingIfViewing();
@@ -101,11 +93,11 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
                   child: Row(
                     // TODO: Maybe we should use a TextSpan instead?
                     children: <Widget>[
-                      Text('${beautifyDate(note.dateCreated)}\t'),
+                      Text('${beautifyDate(_note.dateCreated)}\t'),
                       // SizedBox(
                       //   width: 30,
                       // ),
-                      Text('\t${beautifyTime(note.dateCreated)}')
+                      Text('\t${beautifyTime(_note.dateCreated)}')
                     ],
                   ),
                 ),
@@ -136,14 +128,54 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
   }
 
   void _startEditingIfViewing() {
-    if (!_isEditing) {
+    if (!_isInEditMode) {
       setState(() {
         _pageMode = PageMode.edit;
       });
     }
   }
 
-  bool get _isEditing => _pageMode == PageMode.edit;
+  Future<bool> _handleWillPop() async {
+    _bundleNote();
+    print('Is new note: $_isNewNote');
+
+    // View mode
+    if (!_isInEditMode) {
+      return true; // Pop screen if in view mode
+    }
+
+    //Edit mode
+    if (_isInEditMode) {
+      FocusScope.of(context)
+          .requestFocus(FocusNode()); // Unfocus from textfields
+
+      if (_isNewNote) {
+        // print('Is new note: $_isNewNote');
+        print('Added note...');
+
+        // _noteNotifier.addNote(_note);
+      }
+
+      if (!_isNewNote) {
+        // print('Is new note: $_isNewNote');
+        print('Updated note...');
+        // Update note here
+      }
+
+      setState(() {
+        _pageMode = PageMode.view;
+      });
+    }
+
+    return false;
+  }
+
+  void _bundleNote() {
+    _note.title = _titleController.text;
+    _note.content = _contentController.text;
+  }
+
+  bool get _isInEditMode => _pageMode == PageMode.edit;
 }
 
 enum PageMode { edit, view }

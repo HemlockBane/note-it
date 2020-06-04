@@ -6,7 +6,7 @@ class Note {
   String dateCreated = DateTime.now().toIso8601String();
   String tagName = '';
 
-  bool get isNew => this.title.isEmpty && this.content.isEmpty;
+  // bool get isNew => this.title.isEmpty && this.content.isEmpty;
 
   Note();
 
@@ -20,5 +20,5 @@ class Note {
 }
 
 List<Note> getDummyNotes() {
-  return List.generate(10, (_) => Note.dummy());
+  return List.generate(5, (_) => Note.dummy());
 }
