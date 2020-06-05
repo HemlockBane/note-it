@@ -147,20 +147,21 @@ class NoteListTile extends StatelessWidget {
                 style: TextStyle(fontSize: 11),
               ),
             ),
-            Row(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 7, vertical: 1),
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.all(Radius.circular(4))),
-                  child: Text(
-                    note.tagName,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )
-              ],
-            )
+            if (note.tagName.isNotEmpty)
+              Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 7, vertical: 1),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(Radius.circular(4))),
+                    child: Text(
+                      note.tagName,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                ],
+              )
           ],
         ),
       ),

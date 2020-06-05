@@ -11,18 +11,20 @@ class NoteNotifier with ChangeNotifier {
   static NoteNotifier of(BuildContext context) =>
       Provider.of<NoteNotifier>(context, listen: false);
 
-  DBService _localDBService = DBService();
-  Database _db;
+  // NotesDBService _localDBService;
+  // Database _db;
 
   List<Note> _notes = [...getDummyNotes()];
 
   UnmodifiableListView<Note> get notes => UnmodifiableListView(_notes);
 
-  Future<void> getDbInstance() async => _db = await _localDBService.getDb();
+  // Future<void> init() async =>
+  //     _localDBService = await NotesDBService.getInstance();
 
-  void addNote(Note note) {
+  Future<void> addNote(Note note) async {
+    final dbService = await NotesDBService.getInstance();
+    await dbService.addNote(note);
     _notes.add(note);
-    _localDBService.addNote(note);
     notifyListeners();
   }
 }

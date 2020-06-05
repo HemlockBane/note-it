@@ -1,7 +1,8 @@
 import 'package:date_format/date_format.dart';
 
 class Note {
-  String title = '';
+  int id = 0; 
+  String title = ''; 
   String content = '';
   String dateCreated = DateTime.now().toIso8601String();
   String tagName = '';
@@ -11,14 +12,34 @@ class Note {
   Note();
 
   Note.dummy(
-      {this.title = 'A note on colonisation',
+      {this.id = 0,
+      this.title = 'A note on colonisation',
       this.content =
           'Colonial Masters decided to colonise. What the hell am I saying?',
-      this.tagName = 'Exam'})
+      this.tagName = ''})
       : this.dateCreated = DateTime.now().toIso8601String();
 
+  Note.fromMap(Map json) {}
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = Map();
+    // id will be auto generated in the db
+    map['title'] = title;
+    map['content'] = content;
+    map['date_created'] = dateCreated;
+    return map;
+  }
+
+  @override
+  String toString() {
+    return ''
+        'id - $id, '
+        'title - $title, '
+        'date_created - $dateCreated, '
+        'content - $content, ';
+  }
 }
 
 List<Note> getDummyNotes() {
-  return List.generate(5, (_) => Note.dummy());
+  return List.generate(0, (_) => Note.dummy());
 }
