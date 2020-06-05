@@ -1,8 +1,8 @@
 import 'package:date_format/date_format.dart';
 
 class Note {
-  int id = 0; 
-  String title = ''; 
+  int id = 0;
+  String title = '';
   String content = '';
   String dateCreated = DateTime.now().toIso8601String();
   String tagName = '';
@@ -19,7 +19,12 @@ class Note {
       this.tagName = ''})
       : this.dateCreated = DateTime.now().toIso8601String();
 
-  Note.fromMap(Map json) {}
+  Note.fromMap(Map json) {
+    id = json['id'];
+    title = json['title'];
+    content = json['content'];
+    dateCreated = json['date_created'];
+  }
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = Map();

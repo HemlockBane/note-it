@@ -17,10 +17,24 @@ class MyHomeScreen extends StatefulWidget {
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
   int _currentTabIndex = 0;
+  NoteNotifier _noteNotifier;
+
+  //TODO: Load data before showing tabs?
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final notes = await _noteNotifier.getNotes();
+      for (var note in notes) {
+        print(note);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     // print(getDummyNotes().isNotEmpty);
+    _noteNotifier = NoteNotifier.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),

@@ -27,4 +27,11 @@ class NoteNotifier with ChangeNotifier {
     _notes.add(note);
     notifyListeners();
   }
+
+  Future<List<Note>> getNotes() async {
+    final dbService = await NotesDBService.getInstance();
+    final notes = await dbService.getNotes();
+    _notes.addAll(notes);
+    return notes;
+  }
 }
