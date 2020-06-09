@@ -9,6 +9,10 @@ class Note {
 
   // bool get isNew => this.title.isEmpty && this.content.isEmpty;
 
+  // We're initialising the date outside the constructor brackets because
+  // The default value of an optional parameter must be constant.
+  // See error: dartnon_constant_default_value
+
   Note();
 
   Note.dummy(
@@ -18,6 +22,14 @@ class Note {
           'Colonial Masters decided to colonise. What the hell am I saying?',
       this.tagName = ''})
       : this.dateCreated = DateTime.now().toIso8601String();
+
+  Note.copyOf(Note note) {
+    id = note.id;
+    title = note.title;
+    content = note.content;
+    dateCreated = note.dateCreated;
+    tagName = note.tagName;
+  }
 
   Note.fromMap(Map json) {
     id = json['id'];
@@ -38,7 +50,7 @@ class Note {
   @override
   String toString() {
     return ''
-        'id - $id, '
+        // 'id - $id, '
         'title - $title, '
         'date_created - $dateCreated, '
         'content - $content, ';

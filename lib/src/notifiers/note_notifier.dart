@@ -14,16 +14,16 @@ class NoteNotifier with ChangeNotifier {
   // NotesDBService _localDBService;
   // Database _db;
 
-  List<Note> _notes = [...getDummyNotes()];
+  List<Note> _notes = [];
 
-  UnmodifiableListView<Note> get notes => UnmodifiableListView(_notes);
+  List<Note> get notes => _notes;
 
   // Future<void> init() async =>
   //     _localDBService = await NotesDBService.getInstance();
 
   Future<void> addNote(Note note) async {
     final dbService = await NotesDBService.getInstance();
-    await dbService.addNote(note);
+    // await dbService.addNote(note);
     _notes.add(note);
     notifyListeners();
   }
@@ -33,5 +33,22 @@ class NoteNotifier with ChangeNotifier {
     final notes = await dbService.getNotes();
     _notes.addAll(notes);
     return notes;
+  }
+
+  Future editNote(Note editedNote) async{
+    final dbService = await NotesDBService.getInstance();
+    // dbService.editNote(editedNote);
+
+    // edit note in list
+
+    // Get the movie's index
+
+    // _notes.indexOf(editedNote);
+
+    // _notes.replaceRange();
+
+  
+
+    notifyListeners();
   }
 }
