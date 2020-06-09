@@ -62,7 +62,7 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
         ],
       ),
       body: WillPopScope(
-        onWillPop: _handleWillPop,
+        onWillPop: _onBackButtonPressed,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: SingleChildScrollView(
@@ -133,13 +133,16 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     }
   }
 
-  Future<bool> _handleWillPop() async {
+  /// Determines what to do when the back button is presses
+  /// It pops the screen if it returns false, and doesn't pop
+  /// the screen if it returns true
+  Future<bool> _onBackButtonPressed() async {
     _bundleNote();
     print('Is new note: $_isNewNote');
 
     // In view mode
     if (!_isInEditMode) {
-      return true; // Pop screen if in view mode
+      return true;
     }
 
     //In edit mode
@@ -147,24 +150,28 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
       FocusScope.of(context)
           .requestFocus(FocusNode()); // Unfocus from textfields
 
+      setState(() {
+        _pageMode = PageMode.view;
+      });
+
       // Add note
       if (_isNewNote) {
+        setState(() {
+          _isNewNote = false;
+        });
         print('Added note...');
         await _noteNotifier.addNote(_note);
+        return false;
       }
 
       // Update note
       if (!_isNewNote) {
         // print('Updated note...');
-        // Update note here if there is any change
+        // Update note here if the note has changed
         // await _noteNotifier.editNote(_note);
 
         print('saving note: $_note');
       }
-
-      setState(() {
-        _pageMode = PageMode.view;
-      });
     }
 
     return false; // Don't pop screen if in edit mode
