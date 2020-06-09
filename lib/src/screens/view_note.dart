@@ -28,7 +28,7 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
   @override
   void initState() {
     super.initState();
-    _note = widget.note;
+    _note = Note.copyOf(widget.note);
     _isNewNote = widget.isNewNote;
     _titleController = TextEditingController(text: _note.title);
     _contentController = TextEditingController(text: _note.content);
@@ -75,8 +75,6 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
                   onTap: () {
                     _startEditingIfViewing();
                   },
-                  // onEditingComplete: (){},
-                  // onSubmitted: (value){},
                   style: TextStyle(fontSize: 30),
                   decoration: InputDecoration(
                     hintText: 'Title',
@@ -139,27 +137,29 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     _bundleNote();
     print('Is new note: $_isNewNote');
 
-    // View mode
+    // In view mode
     if (!_isInEditMode) {
       return true; // Pop screen if in view mode
     }
 
-    //Edit mode
+    //In edit mode
     if (_isInEditMode) {
       FocusScope.of(context)
           .requestFocus(FocusNode()); // Unfocus from textfields
 
+      // Add note
       if (_isNewNote) {
-        // print('Is new note: $_isNewNote');
         print('Added note...');
-
-       await _noteNotifier.addNote(_note);
+        await _noteNotifier.addNote(_note);
       }
 
+      // Update note
       if (!_isNewNote) {
-        // print('Is new note: $_isNewNote');
-        print('Updated note...');
-        // Update note here
+        // print('Updated note...');
+        // Update note here if there is any change
+        // await _noteNotifier.editNote(_note);
+
+        print('saving note: $_note');
       }
 
       setState(() {
@@ -167,11 +167,13 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
       });
     }
 
-    return false;
+    return false; // Don't pop screen if in edit mode
   }
 
   void _bundleNote() {
-    _note.title = _titleController.text;
+    _note.title = _titleController.text.isNotEmpty
+        ? _titleController.text
+        : 'Untitled Note';
     _note.content = _contentController.text;
   }
 

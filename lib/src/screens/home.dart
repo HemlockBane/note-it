@@ -25,15 +25,17 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final notes = await _noteNotifier.getNotes();
-      for (var note in notes) {
-        print(note);
-      }
+      // for (var note in notes) {
+      //   print(note);
+      // }
+
+      setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // print(getDummyNotes().isNotEmpty);
+     print('rebuilding home.dart');
     _noteNotifier = NoteNotifier.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -108,7 +110,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   }
 
   void _goToViewNoteScreen({Note note, bool isNewNote = false}) {
-    print(note.title);
+    // print('entering note: $note');
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {

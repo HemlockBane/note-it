@@ -40,7 +40,9 @@ class NotesDBService {
     print(responseCode);
   }
 
-  editNote() {}
+  Future editNote() {
+    // _db.update()
+  }
 
   Future<List<Note>> getNotes() async {
     final maps = await _db.query(tableName);
