@@ -8,7 +8,7 @@ class NotesDBService {
   static final tableName = 'notes';
   static final dbName = 'notes.db';
   static final _sqlString =
-      'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, content TEXT, date_created TEXT)';
+      'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, content TEXT, date_created TEXT, date_last_modified TEXT)';
   static Database _db;
 
   NotesDBService._();
@@ -35,7 +35,6 @@ class NotesDBService {
     // print(map);
     final rowIndex = await _db.insert(tableName, map,
         conflictAlgorithm: ConflictAlgorithm.replace);
-    // print(rowIndex);
     return rowIndex;
   }
 
@@ -53,4 +52,6 @@ class NotesDBService {
   }
 
   deleteNote() {}
+
+  hideNote(){}
 }

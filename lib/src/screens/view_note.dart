@@ -137,7 +137,7 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
   /// It pops the screen if it returns false, and doesn't pop
   /// the screen if it returns true
   Future<bool> _onBackButtonPressed() async {
-    _bundleNote();
+    _bundleNote(_isNewNote);
     print('Is new note: $_isNewNote');
 
     // In view mode
@@ -178,7 +178,13 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     return false; // Don't pop screen if in edit mode
   }
 
-  void _bundleNote() {
+  void _bundleNote(bool isNewNote) {
+    if (!isNewNote) {
+      _note.dateLastModified = DateTime.now().toIso8601String();
+      // print(
+      //     '${beautifyDate(_note.dateLastModified)}:${beautifyTime(_note.dateLastModified)}');
+    }
+
     _note.title = _titleController.text.isNotEmpty
         ? _titleController.text
         : 'Untitled Note';

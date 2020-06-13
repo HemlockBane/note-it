@@ -5,6 +5,7 @@ class Note {
   String title = '';
   String content = '';
   String dateCreated = DateTime.now().toIso8601String();
+  String dateLastModified = DateTime.now().toIso8601String();
   String tagName = '';
 
   // bool get isNew => this.title.isEmpty && this.content.isEmpty;
@@ -21,13 +22,15 @@ class Note {
       this.content =
           'Colonial Masters decided to colonise. What the hell am I saying?',
       this.tagName = ''})
-      : this.dateCreated = DateTime.now().toIso8601String();
+      : this.dateCreated = DateTime.now().toIso8601String(),
+        this.dateLastModified = DateTime.now().toIso8601String();
 
   Note.copyOf(Note note) {
     id = note.id;
     title = note.title;
     content = note.content;
     dateCreated = note.dateCreated;
+    dateLastModified = note.dateLastModified;
     tagName = note.tagName;
   }
 
@@ -36,6 +39,7 @@ class Note {
     title = json['title'];
     content = json['content'];
     dateCreated = json['date_created'];
+    dateLastModified = json['date_last_modified'];
   }
 
   Map<String, dynamic> toMap() {
@@ -44,6 +48,7 @@ class Note {
     map['title'] = title;
     map['content'] = content;
     map['date_created'] = dateCreated;
+    map['date_last_modified'] = dateLastModified;
     return map;
   }
 
@@ -52,8 +57,9 @@ class Note {
     return ''
         // 'id - $id, '
         'title - $title, '
+        'content - $content, '
         'date_created - $dateCreated, '
-        'content - $content, ';
+        'date_last_modified - $dateLastModified, ';
   }
 }
 

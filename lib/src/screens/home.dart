@@ -159,7 +159,7 @@ class NoteListTile extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(bottom: 5),
               child: Text(
-                '${beautifyDate(note.dateCreated)} at ${beautifyTime(note.dateCreated)}',
+                '${beautifyDate(note.dateLastModified)} at ${beautifyTime(note.dateLastModified)}',
                 style: TextStyle(fontSize: 11),
               ),
             ),
