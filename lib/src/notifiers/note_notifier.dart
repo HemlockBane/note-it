@@ -23,7 +23,8 @@ class NoteNotifier with ChangeNotifier {
 
   Future<void> addNote(Note note) async {
     final dbService = await NotesDBService.getInstance();
-    // await dbService.addNote(note);
+    final noteId = await dbService.addNote(note);
+    note.id = noteId;  
     _notes.add(note);
     notifyListeners();
   }
@@ -35,20 +36,12 @@ class NoteNotifier with ChangeNotifier {
     return notes;
   }
 
-  Future editNote(Note editedNote) async{
+  Future editNote(Note editedNote) async {
     final dbService = await NotesDBService.getInstance();
-    // dbService.editNote(editedNote);
-
-    // edit note in list
-
-    // Get the movie's index
-
-    // _notes.indexOf(editedNote);
-
-    // _notes.replaceRange();
-
-  
-
+    dbService.editNote(editedNote);
+    
+    final oldNoteIndex = _notes.indexWhere((note) => note.id == editedNote.id);
+    _notes.replaceRange(oldNoteIndex, oldNoteIndex + 1, [editedNote]);
     notifyListeners();
   }
 }

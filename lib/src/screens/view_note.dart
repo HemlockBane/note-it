@@ -167,8 +167,9 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
       // Update note
       if (!_isNewNote) {
         // print('Updated note...');
-        // Update note here if the note has changed
-        // await _noteNotifier.editNote(_note);
+        //TODO: Update note here if the note has changed
+
+        await _noteNotifier.editNote(_note);
 
         print('saving note: $_note');
       }

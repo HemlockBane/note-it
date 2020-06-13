@@ -35,7 +35,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-     print('rebuilding home.dart');
+    //  print('rebuilding home.dart');
     _noteNotifier = NoteNotifier.of(context);
     return Scaffold(
       appBar: AppBar(

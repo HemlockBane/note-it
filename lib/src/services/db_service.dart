@@ -30,24 +30,25 @@ class NotesDBService {
   static Future<void> _createDB(Database db, int version) =>
       db.execute(_sqlString);
 
-  Future<void> addNote(Note note) async {
+  Future<int> addNote(Note note) async {
     final map = note.toMap();
     // print(map);
-
-    final responseCode = await _db.insert(tableName, map,
+    final rowIndex = await _db.insert(tableName, map,
         conflictAlgorithm: ConflictAlgorithm.replace);
-
-    print(responseCode);
+    // print(rowIndex);
+    return rowIndex;
   }
 
-  Future editNote() {
-    // _db.update()
+  Future<int> editNote(Note editedNote) async {
+    final map = editedNote.toMap();
+    final rowIndex = await _db
+        .update(tableName, map, where: 'id = ?', whereArgs: [editedNote.id]);
+    return rowIndex;
   }
 
   Future<List<Note>> getNotes() async {
     final maps = await _db.query(tableName);
     // print(maps);
-
     return List.generate(maps.length, (index) => Note.fromMap(maps[index]));
   }
 
