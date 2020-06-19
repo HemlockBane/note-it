@@ -154,12 +154,15 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     );
   }
 
-  void _onOptionSelected(PopupMenuValue newValue) {
+  void _onOptionSelected(PopupMenuValue newValue) async{
     print('selected option: $newValue');
 
     if (newValue == PopupMenuValue.delete) {
-      _noteNotifier.deleteNote(_note);
+      await _noteNotifier.deleteNote(_note);
+      Navigator.of(context).pop();
     }
+
+    
   }
 
   void _startEditingIfViewing() {
@@ -225,8 +228,4 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
         : 'Untitled Note';
     _note.content = _contentController.text;
   }
-
-  
 }
-
-

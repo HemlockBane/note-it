@@ -26,6 +26,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
       ),
       body: Consumer<NoteNotifier>(
         builder: (context, noteNotifier, _) {
+          print('rebuilding');
           return noteNotifier.notes.isEmpty
               ? NoNoteInfo()
               : Container(

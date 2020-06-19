@@ -18,6 +18,7 @@ class MyHomeScreen extends StatefulWidget {
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
   int _currentTabIndex = 0;
+  NoteNotifier _noteNotifier;
   final tabs = [
     AllNotesScreen(),
     FavouriteNotesScreen(),
@@ -28,17 +29,18 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // final notes = await _noteNotifier.getNotes();
+      final notes = await _noteNotifier.getNotes();
       // for (var note in notes) {
       //   print(note);
       // }
-      setState(() {});
+      // setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
     //  print('rebuilding home.dart');
+    _noteNotifier = NoteNotifier.of(context);
     return Scaffold(
       // drawer: Drawer(),
       body: tabs[_currentTabIndex],
