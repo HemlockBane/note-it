@@ -17,7 +17,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Notes'),
+        title: Text(AppStrings.allNotes),
         centerTitle: true,
         actions: <Widget>[
           IconButton(icon: Icon(Icons.search), onPressed: () {}),

@@ -46,8 +46,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       bottomNavigationBar: AppBottomNavigationBar(
         onTabSelected: _changeTab,
         items: [
-          AppBottomNavigationBarItem(iconData: Icons.book, text: 'Notes'),
-          AppBottomNavigationBarItem(iconData: Icons.star, text: 'Favourites'),
+          AppBottomNavigationBarItem(iconData: Icons.book, text: AppStrings.all),
+          AppBottomNavigationBarItem(iconData: Icons.star, text: AppStrings.bookmarks),
           // AppBottomNavigationBarItem(iconData: Icons.label, text: 'Tags')
         ],
       ),

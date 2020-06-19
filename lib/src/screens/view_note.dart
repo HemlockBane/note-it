@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/models/note.dart';
+import 'package:note_it/src/models/popup_menu_option.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/utils/utils.dart';
 
@@ -29,6 +30,8 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     PopupMenuOption(
         value: PopupMenuValue.delete, label: 'Delete', iconData: Icons.ac_unit),
   ];
+
+  bool get _isInEditMode => _pageMode == PageMode.edit;
 
   @override
   void initState() {
@@ -221,17 +224,8 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     _note.content = _contentController.text;
   }
 
-  bool get _isInEditMode => _pageMode == PageMode.edit;
+  
 }
 
 enum PageMode { edit, view }
 
-class PopupMenuOption {
-  PopupMenuValue value;
-  String label;
-  IconData iconData;
-
-  PopupMenuOption({this.value, this.label, this.iconData});
-}
-
-enum PopupMenuValue { delete }
