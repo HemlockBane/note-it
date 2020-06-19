@@ -18,7 +18,7 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: AppTheme().lightTheme,
-        home: MyHomeScreen(title: 'Note it'),
+        home: MyHomeScreen(),
         routes: {
           // ViewNoteScreen.routeName: (BuildContext context) => ViewNoteScreen(note: Note(),)
         },

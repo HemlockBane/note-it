@@ -33,6 +33,7 @@ class NoteNotifier with ChangeNotifier {
     final dbService = await NotesDBService.getInstance();
     final notes = await dbService.getNotes();
     _notes.addAll(notes);
+    notifyListeners();
     return notes;
   }
 

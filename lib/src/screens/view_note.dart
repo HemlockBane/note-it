@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/models/note.dart';
+import 'package:note_it/src/models/popup_menu_option.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
-import 'package:note_it/src/services/utils.dart';
+import 'package:note_it/src/utils/utils.dart';
+
+enum PageMode { edit, view }
 
 class ViewNoteScreen extends StatefulWidget {
   static final String routeName = 'view_note';
@@ -29,6 +32,8 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     PopupMenuOption(
         value: PopupMenuValue.delete, label: 'Delete', iconData: Icons.ac_unit),
   ];
+
+  bool get _isInEditMode => _pageMode == PageMode.edit;
 
   @override
   void initState() {
@@ -149,12 +154,15 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     );
   }
 
-  void _onOptionSelected(PopupMenuValue newValue) {
+  void _onOptionSelected(PopupMenuValue newValue) async{
     print('selected option: $newValue');
 
     if (newValue == PopupMenuValue.delete) {
-      _noteNotifier.deleteNote(_note);
+      await _noteNotifier.deleteNote(_note);
+      Navigator.of(context).pop();
     }
+
+    
   }
 
   void _startEditingIfViewing() {
@@ -220,18 +228,4 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
         : 'Untitled Note';
     _note.content = _contentController.text;
   }
-
-  bool get _isInEditMode => _pageMode == PageMode.edit;
 }
-
-enum PageMode { edit, view }
-
-class PopupMenuOption {
-  PopupMenuValue value;
-  String label;
-  IconData iconData;
-
-  PopupMenuOption({this.value, this.label, this.iconData});
-}
-
-enum PopupMenuValue { delete }
