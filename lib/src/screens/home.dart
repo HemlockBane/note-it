@@ -32,7 +32,6 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
       // for (var note in notes) {
       //   print(note);
       // }
-
       setState(() {});
     });
   }

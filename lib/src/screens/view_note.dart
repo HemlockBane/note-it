@@ -4,6 +4,8 @@ import 'package:note_it/src/models/popup_menu_option.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/utils/utils.dart';
 
+enum PageMode { edit, view }
+
 class ViewNoteScreen extends StatefulWidget {
   static final String routeName = 'view_note';
   final Note note;
@@ -227,5 +229,4 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
   
 }
 
-enum PageMode { edit, view }
 
