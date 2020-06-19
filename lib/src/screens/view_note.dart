@@ -25,6 +25,11 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
 
   NoteNotifier _noteNotifier;
 
+  final popUpMenuOptions = [
+    PopupMenuOption(
+        value: PopupMenuValue.delete, label: 'Delete', iconData: Icons.ac_unit),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -55,10 +60,17 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
       appBar: AppBar(
         title: Text(_isInEditMode ? 'Editing' : 'Viewing'),
         actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.more_vert),
-          )
+          PopupMenuButton(
+            onSelected: _onOptionSelected,
+            itemBuilder: (context) => popUpMenuOptions
+                .map(
+                  (menuOption) => PopupMenuItem(
+                    value: menuOption.value,
+                    child: Text(menuOption.label),
+                  ),
+                )
+                .toList(),
+          ),
         ],
       ),
       body: WillPopScope(
@@ -68,61 +80,81 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                TextField(
-                  controller: _titleController,
-                  autofocus: _isNewNote,
-                  focusNode: _titleFocusNode,
-                  onTap: () {
-                    _startEditingIfViewing();
-                  },
-                  style: TextStyle(fontSize: 30),
-                  decoration: InputDecoration(
-                    hintText: 'Title',
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 8),
-                    isDense: true, // Makes text field compact
-                  ),
-                ),
+                _buildTitleField(),
                 Divider(),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: Row(
-                    // TODO: Maybe we should use a TextSpan instead?
-                    children: <Widget>[
-                      Text('${beautifyDate(_note.dateCreated)}\t'),
-                      // SizedBox(
-                      //   width: 30,
-                      // ),
-                      Text('\t${beautifyTime(_note.dateCreated)}')
-                    ],
-                  ),
-                ),
-                TextField(
-                  onTap: () {
-                    _startEditingIfViewing();
-                  },
-                  controller: _contentController,
-                  focusNode: _contentFocusNode,
-                  maxLines: null, // Makes text to wrap to next line
-                  style: TextStyle(fontSize: 18),
-                  decoration: InputDecoration(
-                    hintText: 'Body',
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.only(top: 8),
-                    fillColor: Colors.amber,
-                    isDense: true, // Makes text field compact
-                  ),
-                ),
+                _buildDateAndTimeText(),
+                _buildContentField(),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildTitleField() {
+    return TextField(
+      controller: _titleController,
+      autofocus: _isNewNote,
+      focusNode: _titleFocusNode,
+      onTap: () {
+        _startEditingIfViewing();
+      },
+      style: TextStyle(fontSize: 30),
+      decoration: InputDecoration(
+        hintText: 'Title',
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        contentPadding: EdgeInsets.only(top: 8),
+        isDense: true, // Makes text field compact
+      ),
+    );
+  }
+
+  Widget _buildDateAndTimeText() {
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      child: Row(
+        // TODO: Maybe we should use a TextSpan instead?
+        children: <Widget>[
+          Text('${beautifyDate(_note.dateCreated)}\t'),
+          // SizedBox(
+          //   width: 30,
+          // ),
+          Text('\t${beautifyTime(_note.dateCreated)}')
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContentField() {
+    return TextField(
+      onTap: () {
+        _startEditingIfViewing();
+      },
+      controller: _contentController,
+      focusNode: _contentFocusNode,
+      maxLines: null, // Makes text to wrap to next line
+      style: TextStyle(fontSize: 18),
+      decoration: InputDecoration(
+        hintText: 'Body',
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        contentPadding: EdgeInsets.only(top: 8),
+        fillColor: Colors.amber,
+        isDense: true, // Makes text field compact
+      ),
+    );
+  }
+
+  void _onOptionSelected(PopupMenuValue newValue) {
+    print('selected option: $newValue');
+
+    if (newValue == PopupMenuValue.delete) {
+      _noteNotifier.deleteNote(_note);
+    }
   }
 
   void _startEditingIfViewing() {
@@ -181,8 +213,6 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
   void _bundleNote(bool isNewNote) {
     if (!isNewNote) {
       _note.dateLastModified = DateTime.now().toIso8601String();
-      // print(
-      //     '${beautifyDate(_note.dateLastModified)}:${beautifyTime(_note.dateLastModified)}');
     }
 
     _note.title = _titleController.text.isNotEmpty
@@ -195,3 +225,13 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
 }
 
 enum PageMode { edit, view }
+
+class PopupMenuOption {
+  PopupMenuValue value;
+  String label;
+  IconData iconData;
+
+  PopupMenuOption({this.value, this.label, this.iconData});
+}
+
+enum PopupMenuValue { delete }

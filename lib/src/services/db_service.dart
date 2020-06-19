@@ -32,26 +32,28 @@ class NotesDBService {
 
   Future<int> addNote(Note note) async {
     final map = note.toMap();
-    // print(map);
-    final rowIndex = await _db.insert(tableName, map,
+    final noteId = await _db.insert(tableName, map,
         conflictAlgorithm: ConflictAlgorithm.replace);
-    return rowIndex;
+    return noteId;
   }
 
   Future<int> editNote(Note editedNote) async {
     final map = editedNote.toMap();
-    final rowIndex = await _db
+    final affectedRows = await _db
         .update(tableName, map, where: 'id = ?', whereArgs: [editedNote.id]);
-    return rowIndex;
+    return affectedRows;
   }
 
   Future<List<Note>> getNotes() async {
     final maps = await _db.query(tableName);
-    // print(maps);
     return List.generate(maps.length, (index) => Note.fromMap(maps[index]));
   }
 
-  deleteNote() {}
+  Future<int> deleteNote(Note note) async {
+    final affectedRows =
+        await _db.delete(tableName, where: "id = ?", whereArgs: [note.id]);
+    return affectedRows;
+  }
 
-  hideNote(){}
+  hideNote() {}
 }
