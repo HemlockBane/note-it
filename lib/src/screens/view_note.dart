@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
-import 'package:note_it/src/services/utils.dart';
+import 'package:note_it/src/utils/utils.dart';
 
 class ViewNoteScreen extends StatefulWidget {
   static final String routeName = 'view_note';
