@@ -6,17 +6,19 @@ import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/utils/utils.dart';
 import 'package:note_it/src/widgets/bottom_app_bar.dart';
+import 'package:note_it/src/widgets/drawer.dart';
 import 'package:provider/provider.dart';
 
 import 'all_notes.dart';
 import 'favourite_notes.dart';
 
-class MyHomeScreen extends StatefulWidget {
+class NotesScreen extends StatefulWidget {
+  static final String routeName = 'notes';
   @override
-  _MyHomeScreenState createState() => _MyHomeScreenState();
+  _NotesScreenState createState() => _NotesScreenState();
 }
 
-class _MyHomeScreenState extends State<MyHomeScreen> {
+class _NotesScreenState extends State<NotesScreen> {
   int _currentTabIndex = 0;
   NoteNotifier _noteNotifier;
   final tabs = [
@@ -41,16 +43,20 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   Widget build(BuildContext context) {
     //  print('rebuilding home.dart');
     _noteNotifier = NoteNotifier.of(context);
-    return Scaffold(
-      // drawer: Drawer(),
-      body: tabs[_currentTabIndex],
-      bottomNavigationBar: AppBottomNavigationBar(
-        onTabSelected: _changeTab,
-        items: [
-          AppBottomNavigationBarItem(iconData: Icons.book, text: AppStrings.all),
-          AppBottomNavigationBarItem(iconData: Icons.star, text: AppStrings.bookmarks),
-          // AppBottomNavigationBarItem(iconData: Icons.label, text: 'Tags')
-        ],
+    return SafeArea(
+      child: Scaffold(
+        // drawer: AppDrawer(),
+        body: tabs[_currentTabIndex],
+        bottomNavigationBar: AppBottomNavigationBar(
+          onTabSelected: _changeTab,
+          items: [
+            AppBottomNavigationBarItem(
+                iconData: Icons.book, text: AppStrings.all),
+            AppBottomNavigationBarItem(
+                iconData: Icons.star, text: AppStrings.bookmarks),
+            // AppBottomNavigationBarItem(iconData: Icons.label, text: 'Tags')
+          ],
+        ),
       ),
     );
   }

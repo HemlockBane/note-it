@@ -55,5 +55,17 @@ class NotesDBService {
     return affectedRows;
   }
 
-  hideNote() {}
+  // Future<int> archiveNote(Note noteToArchive) async {
+  //   final map = noteToArchive.toMap();
+  //   final affectedRows = await _db
+  //       .update(tableName, map, where: 'id = ?', whereArgs: [noteToArchive.id]);
+  //   return affectedRows;
+  // }
 }
+
+// Add isArchived to note object
+// Fetch unarchived notes (all)
+// Fetch archived notes (archive)
+// Toggle is archived in list
+// Toggle is archived in db
+

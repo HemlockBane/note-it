@@ -32,6 +32,7 @@ class NoteNotifier with ChangeNotifier {
   Future<List<Note>> getNotes() async {
     final dbService = await NotesDBService.getInstance();
     final notes = await dbService.getNotes();
+    _notes.clear(); // To prevent duplicate notes i.e addding the same notes to the previous notes
     _notes.addAll(notes);
     notifyListeners();
     return notes;

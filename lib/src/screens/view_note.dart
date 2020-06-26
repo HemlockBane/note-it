@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/models/popup_menu_option.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
@@ -63,7 +64,7 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     // print(_pageMode);
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isInEditMode ? 'Editing' : 'Viewing'),
+        title: Text(_isInEditMode ? AppStrings.editing : AppStrings.viewing),
         actions: <Widget>[
           PopupMenuButton(
             onSelected: _onOptionSelected,
@@ -154,15 +155,13 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     );
   }
 
-  void _onOptionSelected(PopupMenuValue newValue) async{
+  void _onOptionSelected(PopupMenuValue newValue) async {
     print('selected option: $newValue');
 
     if (newValue == PopupMenuValue.delete) {
       await _noteNotifier.deleteNote(_note);
       Navigator.of(context).pop();
     }
-
-    
   }
 
   void _startEditingIfViewing() {

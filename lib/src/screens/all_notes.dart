@@ -3,6 +3,7 @@ import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/screens/view_note.dart';
+import 'package:note_it/src/widgets/drawer.dart';
 import 'package:note_it/src/widgets/no_notes_info.dart';
 import 'package:note_it/src/widgets/note_list.dart';
 import 'package:provider/provider.dart';
@@ -24,9 +25,10 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
           IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
         ],
       ),
+      drawer: AppDrawer(),
       body: Consumer<NoteNotifier>(
         builder: (context, noteNotifier, _) {
-          print('rebuilding');
+          print('rebuilding all notes');
           return noteNotifier.notes.isEmpty
               ? NoNoteInfo()
               : Container(
