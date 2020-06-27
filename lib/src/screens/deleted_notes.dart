@@ -8,17 +8,18 @@ import 'package:note_it/src/widgets/no_notes_info.dart';
 import 'package:note_it/src/widgets/note_list.dart';
 import 'package:provider/provider.dart';
 
-class AllNotesScreen extends StatefulWidget {
+class DeletedNotesScreen extends StatefulWidget {
+  static final String routeName = 'deleted_notes';
   @override
-  _AllNotesScreenState createState() => _AllNotesScreenState();
+  _DeletedNotesScreenState createState() => _DeletedNotesScreenState();
 }
 
-class _AllNotesScreenState extends State<AllNotesScreen> {
+class _DeletedNotesScreenState extends State<DeletedNotesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.allNotes),
+        title: Text(AppStrings.deletedNotes),
         centerTitle: true,
         actions: <Widget>[
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
@@ -28,16 +29,16 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
       drawer: AppDrawer(),
       body: Consumer<NoteNotifier>(
         builder: (context, noteNotifier, _) {
-          print('rebuilding all notes');
-          return noteNotifier.notes.isEmpty
+          print('rebuilding deleted notes');
+          return noteNotifier.deletedNotes.isEmpty
               ? NoNoteInfo()
               : Container(
                   // margin: EdgeInsets.symmetric(horizontal: 15),
                   child: ListView.separated(
-                    itemCount: noteNotifier.notes.length,
+                    itemCount: noteNotifier.deletedNotes.length,
                     separatorBuilder: (context, index) => Divider(),
                     itemBuilder: (context, index) {
-                      Note note = noteNotifier.notes[index];
+                      Note note = noteNotifier.deletedNotes[index];
                       Theme.of(context).textTheme.copyWith();
                       return NoteListTile(
                         note: note,

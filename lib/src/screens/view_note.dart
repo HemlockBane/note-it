@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/models/popup_menu_option.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
@@ -27,11 +28,6 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
   FocusNode _contentFocusNode;
 
   NoteNotifier _noteNotifier;
-
-  final popUpMenuOptions = [
-    PopupMenuOption(
-        value: PopupMenuValue.delete, label: 'Delete', iconData: Icons.ac_unit),
-  ];
 
   bool get _isInEditMode => _pageMode == PageMode.edit;
 
@@ -63,18 +59,21 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     // print(_pageMode);
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isInEditMode ? 'Editing' : 'Viewing'),
+        title: Text(_isInEditMode ? AppStrings.editing : AppStrings.viewing),
         actions: <Widget>[
           PopupMenuButton(
-            onSelected: _onOptionSelected,
-            itemBuilder: (context) => popUpMenuOptions
-                .map(
-                  (menuOption) => PopupMenuItem(
+            onSelected: _onMenuOptionSelected,
+            itemBuilder: (context) {
+              var menuOptions = getMenuOptionsForNote(note: _note);
+              return menuOptions.map(
+                (menuOption) {
+                  return PopupMenuItem(
                     value: menuOption.value,
                     child: Text(menuOption.label),
-                  ),
-                )
-                .toList(),
+                  );
+                },
+              ).toList();
+            },
           ),
         ],
       ),
@@ -154,15 +153,32 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     );
   }
 
-  void _onOptionSelected(PopupMenuValue newValue) async{
+  void _onMenuOptionSelected(PopupMenuValue newValue) async {
     print('selected option: $newValue');
 
-    if (newValue == PopupMenuValue.delete) {
-      await _noteNotifier.deleteNote(_note);
-      Navigator.of(context).pop();
+    switch (newValue) {
+      case PopupMenuValue.soft_delete:
+        await _noteNotifier.editNote(_note.copyWith(isSoftDeleted: true));
+        Navigator.of(context).pop();
+        break;
+      case PopupMenuValue.restore:
+        await _noteNotifier.editNote(_note.copyWith(isSoftDeleted: false));
+        Navigator.of(context).pop();
+        break;
+      case PopupMenuValue.hard_delete:
+        await _noteNotifier.hardDeleteNote(_note);
+        Navigator.of(context).pop();
+        break;
+      case PopupMenuValue.archive:
+        await _noteNotifier.editNote(_note.copyWith(isArchived: true));
+        Navigator.of(context).pop();
+        break;
+      case PopupMenuValue.unarchive:
+        await _noteNotifier.editNote(_note.copyWith(isArchived: false));
+        Navigator.of(context).pop();
+        break;
+      default:
     }
-
-    
   }
 
   void _startEditingIfViewing() {
