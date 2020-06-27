@@ -31,6 +31,10 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
 
   final popUpMenuOptions = [
     PopupMenuOption(
+        value: PopupMenuValue.hide, label: 'Hide', iconData: Icons.ac_unit),
+    PopupMenuOption(
+        value: PopupMenuValue.show, label: 'Show', iconData: Icons.ac_unit),
+    PopupMenuOption(
         value: PopupMenuValue.delete, label: 'Delete', iconData: Icons.ac_unit),
   ];
 
@@ -67,15 +71,28 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
         title: Text(_isInEditMode ? AppStrings.editing : AppStrings.viewing),
         actions: <Widget>[
           PopupMenuButton(
-            onSelected: _onOptionSelected,
-            itemBuilder: (context) => popUpMenuOptions
-                .map(
-                  (menuOption) => PopupMenuItem(
+            onSelected: _onMenuOptionSelected,
+            itemBuilder: (context) {
+              var menuOptions = popUpMenuOptions;
+              if (_note.isArchived) {
+                menuOptions.removeWhere(
+                    (menuOption) => menuOption.value == PopupMenuValue.hide);
+              }
+
+              if (!_note.isArchived) {
+                menuOptions.removeWhere(
+                    (menuOption) => menuOption.value == PopupMenuValue.show);
+              }
+
+              return menuOptions.map(
+                (menuOption) {
+                  return PopupMenuItem(
                     value: menuOption.value,
                     child: Text(menuOption.label),
-                  ),
-                )
-                .toList(),
+                  );
+                },
+              ).toList();
+            },
           ),
         ],
       ),
@@ -155,12 +172,27 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     );
   }
 
-  void _onOptionSelected(PopupMenuValue newValue) async {
+  void _onMenuOptionSelected(PopupMenuValue newValue) async {
     print('selected option: $newValue');
 
     if (newValue == PopupMenuValue.delete) {
       await _noteNotifier.deleteNote(_note);
       Navigator.of(context).pop();
+    }
+    switch (newValue) {
+      case PopupMenuValue.delete:
+        await _noteNotifier.deleteNote(_note);
+        Navigator.of(context).pop();
+        break;
+      case PopupMenuValue.hide:
+        await _noteNotifier.archiveNote(_note.copyWith(isArchived: true));
+        Navigator.of(context).pop();
+        break;
+      case PopupMenuValue.show:
+        await _noteNotifier.archiveNote(_note.copyWith(isArchived: false));
+        Navigator.of(context).pop();
+        break;
+      default:
     }
   }
 

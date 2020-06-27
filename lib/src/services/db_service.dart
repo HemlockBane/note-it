@@ -8,7 +8,7 @@ class NotesDBService {
   static final tableName = 'notes';
   static final dbName = 'notes.db';
   static final _sqlString =
-      'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, content TEXT, date_created TEXT, date_last_modified TEXT)';
+      'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, content TEXT, date_created TEXT, date_last_modified TEXT, is_archived INTEGER)';
   static Database _db;
 
   NotesDBService._();
@@ -55,17 +55,11 @@ class NotesDBService {
     return affectedRows;
   }
 
-  // Future<int> archiveNote(Note noteToArchive) async {
-  //   final map = noteToArchive.toMap();
-  //   final affectedRows = await _db
-  //       .update(tableName, map, where: 'id = ?', whereArgs: [noteToArchive.id]);
-  //   return affectedRows;
-  // }
+  Future<int> archiveNote(Note noteToArchive) async {
+    final map = noteToArchive.toMap();
+    final affectedRows = await _db
+        .update(tableName, map, where: 'id = ?', whereArgs: [noteToArchive.id]);
+    return affectedRows;
+  }
 }
-
-// Add isArchived to note object
-// Fetch unarchived notes (all)
-// Fetch archived notes (archive)
-// Toggle is archived in list
-// Toggle is archived in db
 

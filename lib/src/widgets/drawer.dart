@@ -15,11 +15,11 @@ class AppDrawerTileItem {
 final tileItems = [
   AppDrawerTileItem(
       title: 'Notes',
-      iconData: Icons.note,
+      iconData: Icons.lightbulb_outline,
       destinationRoute: NotesScreen.routeName),
   AppDrawerTileItem(
       title: 'Archived Notes',
-      iconData: Icons.ac_unit,
+      iconData: Icons.archive,
       destinationRoute: ArchivedNotesScreen.routeName)
 ];
 

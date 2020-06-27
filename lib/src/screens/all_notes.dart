@@ -38,7 +38,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
                     separatorBuilder: (context, index) => Divider(),
                     itemBuilder: (context, index) {
                       Note note = noteNotifier.notes[index];
-
+                      Theme.of(context).textTheme.copyWith();
                       return NoteListTile(
                         note: note,
                         onNoteTapped: () {

@@ -16,7 +16,11 @@ class NoteNotifier with ChangeNotifier {
 
   List<Note> _notes = [];
 
-  List<Note> get notes => _notes;
+  List<Note> get notes =>
+      _notes.where((note) => note.isArchived == false).toList();
+
+  List<Note> get archivedNotes =>
+      _notes.where((note) => note.isArchived == true).toList();
 
   // Future<void> init() async =>
   //     _localDBService = await NotesDBService.getInstance();
@@ -32,18 +36,28 @@ class NoteNotifier with ChangeNotifier {
   Future<List<Note>> getNotes() async {
     final dbService = await NotesDBService.getInstance();
     final notes = await dbService.getNotes();
-    _notes.clear(); // To prevent duplicate notes i.e addding the same notes to the previous notes
+    _notes
+        .clear(); // To prevent duplicate notes i.e addding the same notes to the previous notes
     _notes.addAll(notes);
     notifyListeners();
     return notes;
   }
 
-  Future<void> editNote(Note noteToEdit) async {
+  Future<void> editNote(Note updatedNote) async {
     final dbService = await NotesDBService.getInstance();
-    await dbService.editNote(noteToEdit);
+    await dbService.editNote(updatedNote);
 
-    final oldNoteIndex = _notes.indexWhere((note) => note.id == noteToEdit.id);
-    _notes.replaceRange(oldNoteIndex, oldNoteIndex + 1, [noteToEdit]);
+    final oldNoteIndex = _notes.indexWhere((note) => note.id == updatedNote.id);
+    _notes.replaceRange(oldNoteIndex, oldNoteIndex + 1, [updatedNote]);
+    notifyListeners();
+  }
+
+   Future<void> archiveNote(Note archivedNote) async {
+    final dbService = await NotesDBService.getInstance();
+    await dbService.editNote(archivedNote);
+
+    final oldNoteIndex = _notes.indexWhere((note) => note.id == archivedNote.id);
+    _notes.replaceRange(oldNoteIndex, oldNoteIndex + 1, [archivedNote]);
     notifyListeners();
   }
 

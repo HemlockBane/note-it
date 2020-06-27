@@ -8,4 +8,4 @@ class PopupMenuOption {
   PopupMenuOption({this.value, this.label, this.iconData});
 }
 
-enum PopupMenuValue { delete }
+enum PopupMenuValue { delete, hide, show }
