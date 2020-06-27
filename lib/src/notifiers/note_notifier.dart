@@ -20,6 +20,9 @@ class NoteNotifier with ChangeNotifier {
       .where((note) => note.isArchived == false && note.isSoftDeleted == false)
       .toList();
 
+  List<Note> get bookmarkedNotes =>
+      notes.where((note) => note.isBookmarked == true).toList();
+
   List<Note> get archivedNotes =>
       _notes.where((note) => note.isArchived == true).toList();
 
@@ -55,7 +58,6 @@ class NoteNotifier with ChangeNotifier {
     _notes.replaceRange(oldNoteIndex, oldNoteIndex + 1, [updatedNote]);
     notifyListeners();
   }
-
 
   Future<void> hardDeleteNote(Note noteToDelete) async {
     final dbService = await NotesDBService.getInstance();

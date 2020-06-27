@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
+import 'package:note_it/src/screens/bookmarked_notes.dart';
 
 import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/utils/utils.dart';
@@ -10,7 +11,7 @@ import 'package:note_it/src/widgets/drawer.dart';
 import 'package:provider/provider.dart';
 
 import 'all_notes.dart';
-import 'favourite_notes.dart';
+
 
 class NotesScreen extends StatefulWidget {
   static final String routeName = 'notes';
@@ -23,7 +24,7 @@ class _NotesScreenState extends State<NotesScreen> {
   NoteNotifier _noteNotifier;
   final tabs = [
     AllNotesScreen(),
-    FavouriteNotesScreen(),
+    BookmarkedNotesScreen(),
   ];
 
   //TODO: Load data before showing tabs?

@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/models/note.dart';
 
-enum PopupMenuValue { soft_delete, hard_delete, restore, archive, unarchive }
+enum PopupMenuValue {
+  soft_delete,
+  hard_delete,
+  restore,
+  archive,
+  unarchive,
+  bookmark,
+  unbookmark
+}
 
 class PopupMenuOption {
   PopupMenuValue value;
@@ -34,26 +42,30 @@ final popUpMenuOptions = [
 ];
 
 List<PopupMenuOption> getMenuOptionsForNote({Note note}) {
-  List<PopupMenuOption> menuOptions = [];
-  // Unarchived note
-  if (!note.isArchived && !note.isSoftDeleted) {
-    menuOptions.addAll(
-      [
+  List<PopupMenuOption> menuOptions = [
+    // Unarchived note options
+    if (!note.isArchived && !note.isSoftDeleted) ...[
+      PopupMenuOption(
+          value: PopupMenuValue.archive,
+          label: 'Archive',
+          iconData: Icons.ac_unit),
+      PopupMenuOption(
+          value: PopupMenuValue.soft_delete,
+          label: 'Delete',
+          iconData: Icons.ac_unit),
+      if (note.isBookmarked)
         PopupMenuOption(
-            value: PopupMenuValue.archive,
-            label: 'Archive',
+            value: PopupMenuValue.unbookmark,
+            label: 'Unbookmark',
             iconData: Icons.ac_unit),
+      if (!note.isBookmarked)
         PopupMenuOption(
-            value: PopupMenuValue.soft_delete,
-            label: 'Delete',
+            value: PopupMenuValue.bookmark,
+            label: 'Bookmark',
             iconData: Icons.ac_unit),
-      ],
-    );
-  }
-
-  //Archived Note
-  if (note.isArchived && !note.isSoftDeleted) {
-    menuOptions.addAll([
+    ],
+    // Archived note options
+    if (note.isArchived && !note.isSoftDeleted) ...[
       PopupMenuOption(
           value: PopupMenuValue.unarchive,
           label: 'Unarchive',
@@ -61,13 +73,54 @@ List<PopupMenuOption> getMenuOptionsForNote({Note note}) {
       PopupMenuOption(
           value: PopupMenuValue.soft_delete,
           label: 'Delete',
-          iconData: Icons.ac_unit)
-    ]);
-  }
+          iconData: Icons.ac_unit),
+    ],
+    if (note.isSoftDeleted)
+      ...deletedNoteOptions
+  ];
 
-  // Soft deleted note
-  if (note.isSoftDeleted) menuOptions.addAll(deletedNoteOptions);
+  // // Unarchived note
+  // if (!note.isArchived && !note.isSoftDeleted) {
+  //   menuOptions.addAll(
+  //     [
+  //       PopupMenuOption(
+  //           value: PopupMenuValue.archive,
+  //           label: 'Archive',
+  //           iconData: Icons.ac_unit),
+  //       PopupMenuOption(
+  //           value: PopupMenuValue.soft_delete,
+  //           label: 'Delete',
+  //           iconData: Icons.ac_unit),
+  //       if (note.isBookmarked)
+  //         PopupMenuOption(
+  //             value: PopupMenuValue.unbookmark,
+  //             label: 'Unbookmark',
+  //             iconData: Icons.ac_unit),
+  //       if (!note.isBookmarked)
+  //         PopupMenuOption(
+  //             value: PopupMenuValue.bookmark,
+  //             label: 'Bookmark',
+  //             iconData: Icons.ac_unit),
+  //     ],
+  //   );
+  // }
 
-  // return popUpMenuOptions;
+  // //Archived Note
+  // if (note.isArchived && !note.isSoftDeleted) {
+  //   menuOptions.addAll([
+  //     PopupMenuOption(
+  //         value: PopupMenuValue.unarchive,
+  //         label: 'Unarchive',
+  //         iconData: Icons.ac_unit),
+  //     PopupMenuOption(
+  //         value: PopupMenuValue.soft_delete,
+  //         label: 'Delete',
+  //         iconData: Icons.ac_unit),
+  //   ]);
+  // }
+
+  // // Soft deleted note
+  // if (note.isSoftDeleted) menuOptions.addAll(deletedNoteOptions);
+
   return menuOptions;
 }
