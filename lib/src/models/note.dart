@@ -8,6 +8,7 @@ class Note {
   String dateLastModified = DateTime.now().toIso8601String();
   bool isArchived = false;
   bool isSoftDeleted = false;
+  bool isBookmarked = false;
   String tagName = '';
 
   bool _mapIntegerToBool(int value) => value == 1 ? true : false;
@@ -27,7 +28,8 @@ class Note {
       this.dateCreated,
       this.dateLastModified,
       this.isArchived,
-      this.isSoftDeleted});
+      this.isSoftDeleted,
+      this.isBookmarked});
 
   Note.dummy(
       {this.id = 0,
@@ -36,7 +38,7 @@ class Note {
           'Colonial Masters decided to colonise. What the hell am I saying?',
       this.tagName = '',
       this.isArchived = false,
-      this.isSoftDeleted = false})
+      this.isSoftDeleted = false, this.isBookmarked})
       : this.dateCreated = DateTime.now().toIso8601String(),
         this.dateLastModified = DateTime.now().toIso8601String();
 
@@ -49,9 +51,10 @@ class Note {
     tagName = note.tagName;
     isArchived = note.isArchived;
     isSoftDeleted = note.isSoftDeleted;
+    isBookmarked = note.isBookmarked;
   }
 
-  Note copyWith({bool isArchived, bool isSoftDeleted}) {
+  Note copyWith({bool isArchived, bool isSoftDeleted, bool isBookmarked}) {
     return Note.from(
         id: this.id,
         title: this.title,
@@ -59,7 +62,8 @@ class Note {
         dateCreated: this.dateCreated,
         dateLastModified: this.dateLastModified,
         isSoftDeleted: isSoftDeleted ?? this.isSoftDeleted,
-        isArchived: isArchived ?? this.isArchived);
+        isArchived: isArchived ?? this.isArchived,
+        isBookmarked: isBookmarked ?? this.isBookmarked);
   }
 
   Note.fromMap(Map json) {
@@ -70,6 +74,7 @@ class Note {
     dateLastModified = json['date_last_modified'];
     isArchived = _mapIntegerToBool(json['is_archived']);
     isSoftDeleted = _mapIntegerToBool(json['is_soft_deleted']);
+    isBookmarked = _mapIntegerToBool(json['is_bookmarked']);
   }
 
   Map<String, dynamic> toMap() {
@@ -81,6 +86,7 @@ class Note {
     map['date_last_modified'] = dateLastModified;
     map['is_archived'] = isArchived ? 1 : 0;
     map['is_soft_deleted'] = isSoftDeleted ? 1 : 0;
+    map['is_bookmarked'] = isBookmarked ? 1 : 0;
     return map;
   }
 
@@ -93,7 +99,8 @@ class Note {
         'date_created - $dateCreated, '
         'date_last_modified - $dateLastModified, '
         'is_archived - $isArchived, '
-        'is_soft_deleted - $isSoftDeleted, ';
+        'is_soft_deleted - $isSoftDeleted, '
+        'is_bookmarked - $isBookmarked, ';
   }
 }
 

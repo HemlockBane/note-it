@@ -177,6 +177,14 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
         await _noteNotifier.editNote(_note.copyWith(isArchived: false));
         Navigator.of(context).pop();
         break;
+      case PopupMenuValue.bookmark:
+        await _noteNotifier.editNote(_note.copyWith(isBookmarked: true));
+        Navigator.of(context).pop();
+        break;
+      case PopupMenuValue.unbookmark:
+        await _noteNotifier.editNote(_note.copyWith(isBookmarked: false));
+        Navigator.of(context).pop();
+        break;
       default:
     }
   }
