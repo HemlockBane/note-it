@@ -8,7 +8,7 @@ class NotesDBService {
   static final tableName = 'notes';
   static final dbName = 'notes.db';
   static final _sqlString =
-      'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, content TEXT, date_created TEXT, date_last_modified TEXT, is_archived INTEGER)';
+      'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, content TEXT, date_created TEXT, date_last_modified TEXT, is_archived INTEGER, is_soft_deleted INTEGER)';
   static Database _db;
 
   NotesDBService._();
@@ -49,17 +49,23 @@ class NotesDBService {
     return List.generate(maps.length, (index) => Note.fromMap(maps[index]));
   }
 
-  Future<int> deleteNote(Note note) async {
+  // Future<int> archiveNote(Note noteToArchive) async {
+  //   final map = noteToArchive.toMap();
+  //   final affectedRows = await _db
+  //       .update(tableName, map, where: 'id = ?', whereArgs: [noteToArchive.id]);
+  //   return affectedRows;
+  // }
+
+  // Future<int> softDeleteNote(Note noteToSoftDelete) async {
+  //   final map = noteToSoftDelete.toMap();
+  //   final affectedRows = await _db.update(tableName, map,
+  //       where: 'id = ?', whereArgs: [noteToSoftDelete.id]);
+  //   return affectedRows;
+  // }
+
+  Future<int> hardDeleteNote(Note note) async {
     final affectedRows =
         await _db.delete(tableName, where: "id = ?", whereArgs: [note.id]);
     return affectedRows;
   }
-
-  Future<int> archiveNote(Note noteToArchive) async {
-    final map = noteToArchive.toMap();
-    final affectedRows = await _db
-        .update(tableName, map, where: 'id = ?', whereArgs: [noteToArchive.id]);
-    return affectedRows;
-  }
 }
-

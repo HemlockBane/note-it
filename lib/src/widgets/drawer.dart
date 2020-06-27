@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:note_it/src/notifiers/drawer_notifier.dart';
 import 'package:note_it/src/screens/archived_notes.dart';
+import 'package:note_it/src/screens/deleted_notes.dart';
 import 'package:note_it/src/screens/notes.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,11 @@ final tileItems = [
   AppDrawerTileItem(
       title: 'Archived Notes',
       iconData: Icons.archive,
-      destinationRoute: ArchivedNotesScreen.routeName)
+      destinationRoute: ArchivedNotesScreen.routeName),
+  AppDrawerTileItem(
+      title: 'Deleted Notes',
+      iconData: Icons.delete,
+      destinationRoute: DeletedNotesScreen.routeName)
 ];
 
 class AppDrawer extends StatefulWidget {

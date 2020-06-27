@@ -7,6 +7,7 @@ class Note {
   String dateCreated = DateTime.now().toIso8601String();
   String dateLastModified = DateTime.now().toIso8601String();
   bool isArchived = false;
+  bool isSoftDeleted = false;
   String tagName = '';
 
   bool _mapIntegerToBool(int value) => value == 1 ? true : false;
@@ -25,7 +26,8 @@ class Note {
       this.content,
       this.dateCreated,
       this.dateLastModified,
-      this.isArchived});
+      this.isArchived,
+      this.isSoftDeleted});
 
   Note.dummy(
       {this.id = 0,
@@ -33,7 +35,8 @@ class Note {
       this.content =
           'Colonial Masters decided to colonise. What the hell am I saying?',
       this.tagName = '',
-      this.isArchived = false})
+      this.isArchived = false,
+      this.isSoftDeleted = false})
       : this.dateCreated = DateTime.now().toIso8601String(),
         this.dateLastModified = DateTime.now().toIso8601String();
 
@@ -45,15 +48,17 @@ class Note {
     dateLastModified = note.dateLastModified;
     tagName = note.tagName;
     isArchived = note.isArchived;
+    isSoftDeleted = note.isSoftDeleted;
   }
 
-  Note copyWith({bool isArchived}) {
+  Note copyWith({bool isArchived, bool isSoftDeleted}) {
     return Note.from(
         id: this.id,
         title: this.title,
         content: this.content,
         dateCreated: this.dateCreated,
         dateLastModified: this.dateLastModified,
+        isSoftDeleted: isSoftDeleted ?? this.isSoftDeleted,
         isArchived: isArchived ?? this.isArchived);
   }
 
@@ -64,6 +69,7 @@ class Note {
     dateCreated = json['date_created'];
     dateLastModified = json['date_last_modified'];
     isArchived = _mapIntegerToBool(json['is_archived']);
+    isSoftDeleted = _mapIntegerToBool(json['is_soft_deleted']);
   }
 
   Map<String, dynamic> toMap() {
@@ -74,6 +80,7 @@ class Note {
     map['date_created'] = dateCreated;
     map['date_last_modified'] = dateLastModified;
     map['is_archived'] = isArchived ? 1 : 0;
+    map['is_soft_deleted'] = isSoftDeleted ? 1 : 0;
     return map;
   }
 
@@ -85,7 +92,8 @@ class Note {
         'content - $content, '
         'date_created - $dateCreated, '
         'date_last_modified - $dateLastModified, '
-        'is_archived - $isArchived, ';
+        'is_archived - $isArchived, '
+        'is_soft_deleted - $isSoftDeleted, ';
   }
 }
 

@@ -16,11 +16,15 @@ class NoteNotifier with ChangeNotifier {
 
   List<Note> _notes = [];
 
-  List<Note> get notes =>
-      _notes.where((note) => note.isArchived == false).toList();
+  List<Note> get notes => _notes
+      .where((note) => note.isArchived == false && note.isSoftDeleted == false)
+      .toList();
 
   List<Note> get archivedNotes =>
       _notes.where((note) => note.isArchived == true).toList();
+
+  List<Note> get deletedNotes =>
+      _notes.where((note) => note.isSoftDeleted == true).toList();
 
   // Future<void> init() async =>
   //     _localDBService = await NotesDBService.getInstance();
@@ -52,18 +56,10 @@ class NoteNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-   Future<void> archiveNote(Note archivedNote) async {
-    final dbService = await NotesDBService.getInstance();
-    await dbService.editNote(archivedNote);
 
-    final oldNoteIndex = _notes.indexWhere((note) => note.id == archivedNote.id);
-    _notes.replaceRange(oldNoteIndex, oldNoteIndex + 1, [archivedNote]);
-    notifyListeners();
-  }
-
-  Future<void> deleteNote(Note noteToDelete) async {
+  Future<void> hardDeleteNote(Note noteToDelete) async {
     final dbService = await NotesDBService.getInstance();
-    await dbService.deleteNote(noteToDelete);
+    await dbService.hardDeleteNote(noteToDelete);
     _notes.removeWhere((note) => note.id == noteToDelete.id);
     notifyListeners();
   }

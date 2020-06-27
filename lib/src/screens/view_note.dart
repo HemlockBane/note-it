@@ -29,15 +29,6 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
 
   NoteNotifier _noteNotifier;
 
-  final popUpMenuOptions = [
-    PopupMenuOption(
-        value: PopupMenuValue.hide, label: 'Hide', iconData: Icons.ac_unit),
-    PopupMenuOption(
-        value: PopupMenuValue.show, label: 'Show', iconData: Icons.ac_unit),
-    PopupMenuOption(
-        value: PopupMenuValue.delete, label: 'Delete', iconData: Icons.ac_unit),
-  ];
-
   bool get _isInEditMode => _pageMode == PageMode.edit;
 
   @override
@@ -73,17 +64,7 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
           PopupMenuButton(
             onSelected: _onMenuOptionSelected,
             itemBuilder: (context) {
-              var menuOptions = popUpMenuOptions;
-              if (_note.isArchived) {
-                menuOptions.removeWhere(
-                    (menuOption) => menuOption.value == PopupMenuValue.hide);
-              }
-
-              if (!_note.isArchived) {
-                menuOptions.removeWhere(
-                    (menuOption) => menuOption.value == PopupMenuValue.show);
-              }
-
+              var menuOptions = getMenuOptionsForNote(note: _note);
               return menuOptions.map(
                 (menuOption) {
                   return PopupMenuItem(
@@ -175,21 +156,25 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
   void _onMenuOptionSelected(PopupMenuValue newValue) async {
     print('selected option: $newValue');
 
-    if (newValue == PopupMenuValue.delete) {
-      await _noteNotifier.deleteNote(_note);
-      Navigator.of(context).pop();
-    }
     switch (newValue) {
-      case PopupMenuValue.delete:
-        await _noteNotifier.deleteNote(_note);
+      case PopupMenuValue.soft_delete:
+        await _noteNotifier.editNote(_note.copyWith(isSoftDeleted: true));
         Navigator.of(context).pop();
         break;
-      case PopupMenuValue.hide:
-        await _noteNotifier.archiveNote(_note.copyWith(isArchived: true));
+      case PopupMenuValue.restore:
+        await _noteNotifier.editNote(_note.copyWith(isSoftDeleted: false));
         Navigator.of(context).pop();
         break;
-      case PopupMenuValue.show:
-        await _noteNotifier.archiveNote(_note.copyWith(isArchived: false));
+      case PopupMenuValue.hard_delete:
+        await _noteNotifier.hardDeleteNote(_note);
+        Navigator.of(context).pop();
+        break;
+      case PopupMenuValue.archive:
+        await _noteNotifier.editNote(_note.copyWith(isArchived: true));
+        Navigator.of(context).pop();
+        break;
+      case PopupMenuValue.unarchive:
+        await _noteNotifier.editNote(_note.copyWith(isArchived: false));
         Navigator.of(context).pop();
         break;
       default:
