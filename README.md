@@ -2,7 +2,7 @@
 
 A note-taking app built with Flutter
 
-Note It is a `<note-taking app>` that allows `<you>` to `<take notes and favourite notes>`.
+Note It is a `note-taking app` that allows you to `take notes and favourite notes`.
 
 ## Getting Started
 
