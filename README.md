@@ -2,13 +2,22 @@
 
 A note-taking app built with Flutter
 
-Note It is a `note-taking app` that allows you to `take notes and favourite notes`.
+Note It is a note-taking app that allows you to take notes and favourite notes.
+
+## Features
+- Add a note
+- Edit a note
+- Archive a note
+- Bookmark a note
+- Delete a note
+- Search notes (In progress)
+- Sync notes (Pending)
 
 ## Getting Started
 
 ### Prerequisites
 
-### Dependecies
+### Dependencies
 - date_format
 - provider
 - sqflite
