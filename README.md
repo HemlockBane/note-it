@@ -11,14 +11,20 @@ Note It is a note-taking app that allows you to take notes and favourite notes.
 - Search notes (In progress)
 - Sync notes (Pending)
 
+### Screenshots
+Pending...
+
 ## Getting Started
 
 ### Prerequisites
+- Ensure that you have flutter installed and setup correctly
 
 ### Dependencies
 - date_format
 - provider
 - sqflite
 
-### Installation
-With Flutter installed, clone the project and run `flutter run`  in the terminal
+### Installing the app
+- Clone the repo
+- Fetch dependencies: Run `flutter packages get` in the terminal
+- Install app: Run `flutter run`  in the terminal
