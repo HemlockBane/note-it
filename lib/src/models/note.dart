@@ -105,5 +105,5 @@ class Note {
 }
 
 List<Note> getDummyNotes() {
-  return List.generate(0, (_) => Note.dummy());
+  return List.generate(1, (_) => Note.dummy());
 }

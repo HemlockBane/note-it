@@ -21,7 +21,14 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
         title: Text(AppStrings.allNotes),
         centerTitle: true,
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: NoteSearchDelegate(),
+                );
+              }),
           IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
         ],
       ),
@@ -42,7 +49,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
                       return NoteListTile(
                         note: note,
                         onNoteTapped: () {
-                          _goToViewNoteScreen(note: note);
+                          goToViewNoteScreen(context: context, note: note);
                         },
                       );
                     },
@@ -53,24 +60,91 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).accentColor,
         onPressed: () {
-          _goToViewNoteScreen(note: Note(), isNewNote: true);
+          goToViewNoteScreen(context: context, note: Note(), isNewNote: true);
         },
         tooltip: 'Add Note',
         child: Icon(Icons.add),
       ),
     );
   }
+}
 
-  void _goToViewNoteScreen({Note note, bool isNewNote = false}) {
-    // print('entering note: $note');
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) {
-        return ViewNoteScreen(
-          note: note,
-          isNewNote: isNewNote,
-        );
-      }),
+class NoteSearchDelegate extends SearchDelegate {
+  NoteSearchDelegate();
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
     );
   }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Text('Results'),
+      ),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // If search query is empty,
+    // show suggestions based on previous searches or based on the current context
+
+    // If search query is not empty, show suggestions that match the query
+
+    return Consumer<NoteNotifier>(
+      builder: (context, _noteNotifier, _) {
+        List<Note> notes = [];
+
+        // string.contains() returns values for an empty query. How??
+        if (query.isNotEmpty) {
+          notes = _noteNotifier.notes
+              .where((note) => note.title.toLowerCase().contains(query))
+              .toList();
+        }
+
+        bool hasNoResults = query.isNotEmpty && notes.isEmpty;
+
+        return hasNoResults
+            ? Center(child: Text("No results", style: TextStyle(fontSize: 18)))
+            : ListView.builder(
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  final note = notes[index];
+                  return NoteListTile(
+                      note: note,
+                      onNoteTapped: () {
+                        goToViewNoteScreen(context: context, note: note);
+                      });
+                },
+              );
+      },
+    );
+  }
+}
+
+void goToViewNoteScreen(
+    {@required BuildContext context,
+    @required Note note,
+    bool isNewNote = false}) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) {
+      return ViewNoteScreen(
+        note: note,
+        isNewNote: isNewNote,
+      );
+    }),
+  );
 }
