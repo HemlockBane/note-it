@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
@@ -107,16 +110,16 @@ class NoteSearchDelegate extends SearchDelegate {
       builder: (context, _noteNotifier, _) {
         List<Note> notes = [];
 
-        // string.contains() returns values for an empty query. How??
+        // string.contains() returns true for an empty query. How??
         if (query.isNotEmpty) {
-          notes = _noteNotifier.notes
+          notes
               .where((note) => note.title.toLowerCase().contains(query))
               .toList();
         }
 
-        bool hasNoResults = query.isNotEmpty && notes.isEmpty;
+        bool queryHasNoResults = query.isNotEmpty && notes.isEmpty;
 
-        return hasNoResults
+        return queryHasNoResults
             ? Center(child: Text("No results", style: TextStyle(fontSize: 18)))
             : ListView.builder(
                 itemCount: notes.length,
