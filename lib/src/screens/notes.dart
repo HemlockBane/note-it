@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
@@ -52,9 +54,9 @@ class _NotesScreenState extends State<NotesScreen> {
           onTabSelected: _changeTab,
           items: [
             AppBottomNavigationBarItem(
-                iconData: Icons.book, text: AppStrings.all),
+                iconData: LineIcons.home, text: AppStrings.all),
             AppBottomNavigationBarItem(
-                iconData: Icons.star, text: AppStrings.bookmarks),
+                iconData: LineIcons.star, text: AppStrings.bookmarks),
             // AppBottomNavigationBarItem(iconData: Icons.label, text: 'Tags')
           ],
         ),

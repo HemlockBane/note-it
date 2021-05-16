@@ -23,6 +23,7 @@ class App extends StatelessWidget {
         title: 'Flutter Demo',
         theme: AppTheme().lightTheme,
         home: NotesScreen(),
+        debugShowCheckedModeBanner: false,
         routes: {
           NotesScreen.routeName: (BuildContext context) => NotesScreen(),
           ArchivedNotesScreen.routeName: (BuildContext context) => ArchivedNotesScreen(),

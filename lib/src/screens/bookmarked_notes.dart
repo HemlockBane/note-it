@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
@@ -14,15 +15,24 @@ class BookmarkedNotesScreen extends StatefulWidget {
 }
 
 class _BookmarkedNotesScreenState extends State<BookmarkedNotesScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(AppStrings.bookmarkedNotes),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(LineIcons.bars),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
-          IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+          IconButton(icon: Icon(LineIcons.search), onPressed: () {}),
+          IconButton(icon: Icon(LineIcons.verticalEllipsis), onPressed: () {}),
         ],
       ),
       drawer: AppDrawer(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
@@ -15,12 +16,21 @@ class ArchivedNotesScreen extends StatefulWidget {
 }
 
 class _ArchivedNotesScreenState extends State<ArchivedNotesScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text(AppStrings.archivedNotes),
+          leading: IconButton(
+            icon: Icon(LineIcons.bars),
+            onPressed: () {
+              _scaffoldKey.currentState.openDrawer();
+            },
+          ),
         ),
         drawer: AppDrawer(),
         body: Consumer<NoteNotifier>(

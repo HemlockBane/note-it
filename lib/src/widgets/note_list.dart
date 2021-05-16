@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:note_it/src/models/note.dart';
@@ -18,7 +16,12 @@ class NoteListTile extends StatelessWidget {
         onNoteTapped();
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 9.0),
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(color: Colors.red, width: 5.0),
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

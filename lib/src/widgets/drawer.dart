@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:note_it/src/notifiers/drawer_notifier.dart';
 import 'package:note_it/src/screens/archived_notes.dart';
 import 'package:note_it/src/screens/deleted_notes.dart';
@@ -16,15 +17,15 @@ class AppDrawerTileItem {
 final tileItems = [
   AppDrawerTileItem(
       title: 'Notes',
-      iconData: Icons.lightbulb_outline,
+      iconData: LineIcons.lightbulb,
       destinationRoute: NotesScreen.routeName),
   AppDrawerTileItem(
       title: 'Archived Notes',
-      iconData: Icons.archive,
+      iconData: LineIcons.archive,
       destinationRoute: ArchivedNotesScreen.routeName),
   AppDrawerTileItem(
       title: 'Deleted Notes',
-      iconData: Icons.delete,
+      iconData: LineIcons.trash,
       destinationRoute: DeletedNotesScreen.routeName)
 ];
 

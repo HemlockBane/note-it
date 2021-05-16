@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
@@ -17,22 +18,31 @@ class AllNotesScreen extends StatefulWidget {
 }
 
 class _AllNotesScreenState extends State<AllNotesScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(AppStrings.allNotes),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(LineIcons.bars),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.search),
+              icon: Icon(LineIcons.search),
               onPressed: () {
                 showSearch(
                   context: context,
                   delegate: NoteSearchDelegate(),
                 );
               }),
-          IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+          IconButton(icon: Icon(LineIcons.verticalEllipsis), onPressed: () {}),
         ],
       ),
       drawer: AppDrawer(),
@@ -45,7 +55,14 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
                   // margin: EdgeInsets.symmetric(horizontal: 15),
                   child: ListView.separated(
                     itemCount: noteNotifier.notes.length,
-                    separatorBuilder: (context, index) => Divider(),
+                    separatorBuilder: (context, index) => Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 15,
+                      ),
+                      child: Divider(
+                        height: 3,
+                      ),
+                    ),
                     itemBuilder: (context, index) {
                       Note note = noteNotifier.notes[index];
                       Theme.of(context).textTheme.copyWith();
@@ -66,7 +83,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
           goToViewNoteScreen(context: context, note: Note(), isNewNote: true);
         },
         tooltip: 'Add Note',
-        child: Icon(Icons.add),
+        child: Icon(LineIcons.plus),
       ),
     );
   }
@@ -83,7 +100,7 @@ class NoteSearchDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: Icon(LineIcons.arrowLeft),
       onPressed: () {
         close(context, null);
       },
