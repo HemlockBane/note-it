@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/utils/utils.dart';
+import 'package:note_it/src/widgets/theme.dart';
 
 class NoteListTile extends StatelessWidget {
   final Note note;
@@ -29,7 +30,11 @@ class NoteListTile extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 5),
               child: Text(
                 note.title,
-                style: TextStyle(fontSize: 18),
+                style: bodyText1Style(
+                  context,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             Container(
@@ -38,14 +43,14 @@ class NoteListTile extends StatelessWidget {
                 note.content,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 14),
+                style: bodyText1Style(context, fontSize: 14),
               ),
             ),
             Container(
               margin: EdgeInsets.only(bottom: 5),
               child: Text(
                 '${beautifyDate(note.dateLastModified)} at ${beautifyTime(note.dateLastModified)}',
-                style: TextStyle(fontSize: 11),
+                style: bodyText1Style(context, fontSize: 12, color: AppTheme.grey, fontWeight: FontWeight.w500),
               ),
             ),
             if (note.tagName.isNotEmpty)

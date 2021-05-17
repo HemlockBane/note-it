@@ -9,26 +9,39 @@ import 'package:provider/provider.dart';
 
 import 'models/note.dart';
 import 'notifiers/drawer_notifier.dart';
+import 'notifiers/theme_notifier.dart';
 
 class App extends StatelessWidget {
-  // This widget is the root of your application.
+  final ThemeOption themeOption;
+
+  App({@required this.themeOption});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => NoteNotifier()),
         ChangeNotifierProvider(create: (_) => DrawerNotifier()),
+        ChangeNotifierProvider(create: (_) => ThemeNotifier(themeOption: themeOption)),
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: AppTheme().lightTheme,
-        home: NotesScreen(),
-        debugShowCheckedModeBanner: false,
-        routes: {
-          NotesScreen.routeName: (BuildContext context) => NotesScreen(),
-          ArchivedNotesScreen.routeName: (BuildContext context) => ArchivedNotesScreen(),
-          DeletedNotesScreen.routeName: (BuildContext context) => DeletedNotesScreen()
-          // ViewNoteScreen.routeName: (BuildContext context) => ViewNoteScreen(note: Note(),)
+      child: Consumer<ThemeNotifier>(
+        builder: (context, themeNotifier, _) {
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: AppTheme().lightTheme,
+            darkTheme: AppTheme().darkTheme,
+            themeMode: themeNotifier.getThemeMode(),
+            home: NotesScreen(),
+            debugShowCheckedModeBanner: false,
+            routes: {
+              NotesScreen.routeName: (BuildContext context) => NotesScreen(),
+              ArchivedNotesScreen.routeName: (BuildContext context) =>
+                  ArchivedNotesScreen(),
+              DeletedNotesScreen.routeName: (BuildContext context) =>
+                  DeletedNotesScreen()
+              // ViewNoteScreen.routeName: (BuildContext context) => ViewNoteScreen(note: Note(),)
+            },
+          );
         },
       ),
     );

@@ -7,6 +7,7 @@ import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/widgets/drawer.dart';
 import 'package:note_it/src/widgets/no_notes_info.dart';
 import 'package:note_it/src/widgets/note_list.dart';
+import 'package:note_it/src/widgets/theme.dart';
 import 'package:provider/provider.dart';
 
 class DeletedNotesScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class DeletedNotesScreen extends StatefulWidget {
 }
 
 class _DeletedNotesScreenState extends State<DeletedNotesScreen> {
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class _DeletedNotesScreenState extends State<DeletedNotesScreen> {
       appBar: AppBar(
         title: Text(AppStrings.deletedNotes),
         centerTitle: true,
-         leading: IconButton(
+        leading: IconButton(
           icon: Icon(LineIcons.bars),
           onPressed: () {
             _scaffoldKey.currentState.openDrawer();

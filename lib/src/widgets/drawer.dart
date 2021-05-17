@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/notifiers/drawer_notifier.dart';
+import 'package:note_it/src/notifiers/theme_notifier.dart';
 import 'package:note_it/src/screens/archived_notes.dart';
 import 'package:note_it/src/screens/deleted_notes.dart';
 import 'package:note_it/src/screens/notes.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppDrawerTileItem {
   AppDrawerTileItem({this.title, this.iconData, this.destinationRoute});
@@ -36,12 +39,14 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   DrawerNotifier _drawerNotifier;
+  ThemeNotifier _themeNotifier;
   Color _selectedColor = Colors.black;
   Color _unselectedColor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
     _drawerNotifier = DrawerNotifier.of(context);
+    _themeNotifier = ThemeNotifier.of(context);
 
     return SafeArea(
       child: Drawer(
@@ -50,7 +55,26 @@ class _AppDrawerState extends State<AppDrawer> {
             return ListView(
               children: <Widget>[
                 ..._buildDrawerListTiles(
-                    currentlySelectedIndex: drawer.currentlySelectedIndex)
+                    currentlySelectedIndex: drawer.currentlySelectedIndex),
+                Consumer<ThemeNotifier>(builder: (context, themeNotifier, _) {
+                  final isLightMode =
+                      themeNotifier.getThemeMode() == ThemeMode.light;
+
+                  final _isSwitchSelected = isLightMode ? false : true;
+
+                  return SwitchListTile(
+                    title: Text(_isSwitchSelected ? "Dark Mode" : "Light Mode"),
+                    value: _isSwitchSelected,
+                    onChanged: (bool isSwitchSelected) async {
+                      final themeOption = isSwitchSelected
+                          ? ThemeOption.dark
+                          : ThemeOption.light;
+                      _themeNotifier.updateThemeOption(themeOption);
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setInt(AppStrings.themeIndex, themeOption.index);
+                    },
+                  );
+                })
               ],
             );
           },
