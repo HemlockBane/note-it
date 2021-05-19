@@ -207,7 +207,7 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     }
   }
 
-  /// Determines what to do when the back button is presses
+  /// Determines what to do when the back button is pressed
   /// It pops the screen if it returns false, and doesn't pop
   /// the screen if it returns true
   Future<bool> _onBackButtonPressed() async {

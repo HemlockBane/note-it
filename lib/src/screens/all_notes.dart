@@ -9,7 +9,7 @@ import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/widgets/drawer.dart';
 import 'package:note_it/src/widgets/no_notes_info.dart';
-import 'package:note_it/src/widgets/note_list.dart';
+import 'package:note_it/src/widgets/note_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class AllNotesScreen extends StatefulWidget {
@@ -45,19 +45,23 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
           IconButton(icon: Icon(LineIcons.verticalEllipsis), onPressed: () {}),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: AppDrawer(
+        selectedColor: Theme.of(context).colorScheme.onPrimary,
+      ),
       body: Consumer<NoteNotifier>(
         builder: (context, noteNotifier, _) {
           print('rebuilding all notes');
           return noteNotifier.notes.isEmpty
               ? NoNoteInfo()
               : Container(
+                  color: Theme.of(context).colorScheme.background,
                   // margin: EdgeInsets.symmetric(horizontal: 15),
                   child: ListView.separated(
+                    //TODO: We probably have to modify the theme of the listview
                     itemCount: noteNotifier.notes.length,
                     separatorBuilder: (context, index) => Container(
                       margin: EdgeInsets.symmetric(
-                        horizontal: 15,
+                        horizontal: 24,
                       ),
                       child: Divider(
                         height: 3,
@@ -78,7 +82,7 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         onPressed: () {
           goToViewNoteScreen(context: context, note: Note(), isNewNote: true);
         },
@@ -118,11 +122,6 @@ class NoteSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // If search query is empty,
-    // show suggestions based on previous searches or based on the current context
-
-    // If search query is not empty, show suggestions that match the query
-
     return Consumer<NoteNotifier>(
       builder: (context, _noteNotifier, _) {
         List<Note> notes = [];

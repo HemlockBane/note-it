@@ -19,6 +19,7 @@ class NoteListTile extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 9.0),
         decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
           border: Border(
             left: BorderSide(color: Colors.red, width: 5.0),
           ),
@@ -32,6 +33,7 @@ class NoteListTile extends StatelessWidget {
                 note.title,
                 style: bodyText1Style(
                   context,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
                 ),
@@ -43,14 +45,24 @@ class NoteListTile extends StatelessWidget {
                 note.content,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: bodyText1Style(context, fontSize: 14),
+                style: bodyText1Style(
+                  context,
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
             ),
             Container(
               margin: EdgeInsets.only(bottom: 5),
               child: Text(
                 '${beautifyDate(note.dateLastModified)} at ${beautifyTime(note.dateLastModified)}',
-                style: bodyText1Style(context, fontSize: 12, color: AppTheme.grey, fontWeight: FontWeight.w500),
+                style: bodyText1Style(
+                  context,
+                  fontSize: 12,
+                  color:
+                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             if (note.tagName.isNotEmpty)
@@ -59,8 +71,9 @@ class NoteListTile extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 7, vertical: 1),
                     decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(4))),
+                      color: Colors.black,
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    ),
                     child: Text(
                       note.tagName,
                       style: TextStyle(color: Colors.white),

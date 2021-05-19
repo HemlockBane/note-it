@@ -33,6 +33,12 @@ final tileItems = [
 ];
 
 class AppDrawer extends StatefulWidget {
+  final Color selectedColor;
+  final Color unselectedColor;
+
+  AppDrawer(
+      {this.selectedColor = Colors.black, this.unselectedColor = Colors.grey});
+
   @override
   _AppDrawerState createState() => _AppDrawerState();
 }
@@ -40,8 +46,6 @@ class AppDrawer extends StatefulWidget {
 class _AppDrawerState extends State<AppDrawer> {
   DrawerNotifier _drawerNotifier;
   ThemeNotifier _themeNotifier;
-  Color _selectedColor = Colors.black;
-  Color _unselectedColor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
@@ -50,34 +54,38 @@ class _AppDrawerState extends State<AppDrawer> {
 
     return SafeArea(
       child: Drawer(
-        child: Consumer<DrawerNotifier>(
-          builder: (context, drawer, child) {
-            return ListView(
-              children: <Widget>[
-                ..._buildDrawerListTiles(
-                    currentlySelectedIndex: drawer.currentlySelectedIndex),
-                Consumer<ThemeNotifier>(builder: (context, themeNotifier, _) {
-                  final isLightMode =
-                      themeNotifier.getThemeMode() == ThemeMode.light;
+        child: Container(
+          color: Theme.of(context).colorScheme.primary,
+          child: Consumer<DrawerNotifier>(
+            builder: (context, drawer, _) {
+      
+              return ListView(
+                children: <Widget>[
+                  ..._buildDrawerListTiles(
+                      currentlySelectedIndex: drawer.currentlySelectedIndex),
+                  Consumer<ThemeNotifier>(builder: (context, themeNotifier, _) {
+                    final isLightMode =
+                        themeNotifier.getThemeMode() == ThemeMode.light;
 
-                  final _isSwitchSelected = isLightMode ? false : true;
+                    final _isSwitchSelected = isLightMode ? false : true;
 
-                  return SwitchListTile(
-                    title: Text(_isSwitchSelected ? "Dark Mode" : "Light Mode"),
-                    value: _isSwitchSelected,
-                    onChanged: (bool isSwitchSelected) async {
-                      final themeOption = isSwitchSelected
-                          ? ThemeOption.dark
-                          : ThemeOption.light;
-                      _themeNotifier.updateThemeOption(themeOption);
-                      final prefs = await SharedPreferences.getInstance();
-                      prefs.setInt(AppStrings.themeIndex, themeOption.index);
-                    },
-                  );
-                })
-              ],
-            );
-          },
+                    return SwitchListTile(
+                      title: Text(_isSwitchSelected ? "Dark Mode" : "Light Mode"),
+                      value: _isSwitchSelected,
+                      onChanged: (bool isSwitchSelected) async {
+                        final themeOption = isSwitchSelected
+                            ? ThemeOption.dark
+                            : ThemeOption.light;
+                        _themeNotifier.updateThemeOption(themeOption);
+                        final prefs = await SharedPreferences.getInstance();
+                        prefs.setInt(AppStrings.themeIndex, themeOption.index);
+                      },
+                    );
+                  })
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -86,14 +94,16 @@ class _AppDrawerState extends State<AppDrawer> {
   _buildDrawerListTiles({int currentlySelectedIndex}) {
     return List.generate(tileItems.length, (int index) {
       final tileItem = tileItems[index];
-      Color color =
-          currentlySelectedIndex == index ? _selectedColor : _unselectedColor;
+      Color color = currentlySelectedIndex == index
+          ? widget.selectedColor
+          : widget.unselectedColor;
       return _buildDrawerListTile(
-          index: index,
-          title: tileItem.title,
-          iconData: tileItem.iconData,
-          destinationRoute: tileItem.destinationRoute,
-          color: color);
+        index: index,
+        title: tileItem.title,
+        iconData: tileItem.iconData,
+        destinationRoute: tileItem.destinationRoute,
+        color: color,
+      );
     });
   }
 

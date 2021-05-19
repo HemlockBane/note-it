@@ -6,7 +6,7 @@ import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/widgets/drawer.dart';
 import 'package:note_it/src/widgets/no_notes_info.dart';
-import 'package:note_it/src/widgets/note_list.dart';
+import 'package:note_it/src/widgets/note_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class BookmarkedNotesScreen extends StatefulWidget {

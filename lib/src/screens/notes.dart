@@ -14,7 +14,6 @@ import 'package:provider/provider.dart';
 
 import 'all_notes.dart';
 
-
 class NotesScreen extends StatefulWidget {
   static final String routeName = 'notes';
   @override
@@ -48,9 +47,12 @@ class _NotesScreenState extends State<NotesScreen> {
     _noteNotifier = NoteNotifier.of(context);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         // drawer: AppDrawer(),
         body: tabs[_currentTabIndex],
         bottomNavigationBar: AppBottomNavigationBar(
+          selectedColor: Theme.of(context).iconTheme.color.withOpacity(0.9),
+          color: Theme.of(context).iconTheme.color.withOpacity(0.5),
           onTabSelected: _changeTab,
           items: [
             AppBottomNavigationBarItem(
