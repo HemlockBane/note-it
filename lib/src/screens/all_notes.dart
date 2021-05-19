@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/widgets/drawer.dart';
 import 'package:note_it/src/widgets/no_notes_info.dart';
-import 'package:note_it/src/widgets/note_list.dart';
+import 'package:note_it/src/widgets/note_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class AllNotesScreen extends StatefulWidget {
@@ -17,35 +18,55 @@ class AllNotesScreen extends StatefulWidget {
 }
 
 class _AllNotesScreenState extends State<AllNotesScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(AppStrings.allNotes),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(LineIcons.bars),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.search),
+              icon: Icon(LineIcons.search),
               onPressed: () {
                 showSearch(
                   context: context,
                   delegate: NoteSearchDelegate(),
                 );
               }),
-          IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+          IconButton(icon: Icon(LineIcons.verticalEllipsis), onPressed: () {}),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: AppDrawer(
+        selectedColor: Theme.of(context).colorScheme.onPrimary,
+      ),
       body: Consumer<NoteNotifier>(
         builder: (context, noteNotifier, _) {
           print('rebuilding all notes');
           return noteNotifier.notes.isEmpty
               ? NoNoteInfo()
               : Container(
+                  color: Theme.of(context).colorScheme.background,
                   // margin: EdgeInsets.symmetric(horizontal: 15),
                   child: ListView.separated(
+                    //TODO: We probably have to modify the theme of the listview
                     itemCount: noteNotifier.notes.length,
-                    separatorBuilder: (context, index) => Divider(),
+                    separatorBuilder: (context, index) => Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 24,
+                      ),
+                      child: Divider(
+                        height: 3,
+                      ),
+                    ),
                     itemBuilder: (context, index) {
                       Note note = noteNotifier.notes[index];
                       Theme.of(context).textTheme.copyWith();
@@ -61,12 +82,12 @@ class _AllNotesScreenState extends State<AllNotesScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         onPressed: () {
           goToViewNoteScreen(context: context, note: Note(), isNewNote: true);
         },
         tooltip: 'Add Note',
-        child: Icon(Icons.add),
+        child: Icon(LineIcons.plus),
       ),
     );
   }
@@ -83,7 +104,7 @@ class NoteSearchDelegate extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: Icon(LineIcons.arrowLeft),
       onPressed: () {
         close(context, null);
       },
@@ -101,11 +122,6 @@ class NoteSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // If search query is empty,
-    // show suggestions based on previous searches or based on the current context
-
-    // If search query is not empty, show suggestions that match the query
-
     return Consumer<NoteNotifier>(
       builder: (context, _noteNotifier, _) {
         List<Note> notes = [];

@@ -1,4 +1,4 @@
-class AppStrings{
+class AppStrings {
   static const String allNotes = 'All Notes';
   static const String bookmarkedNotes = 'Bookmarked Notes';
   static const String archivedNotes = 'Archived Notes';
@@ -9,5 +9,5 @@ class AppStrings{
   static const String noNotes = 'Oops! No notes here.';
   static const String editing = 'Editing';
   static const String viewing = 'Viewing';
-
+  static const String themeIndex = 'themeIndex';
 }

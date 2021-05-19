@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/models/popup_menu_option.dart';
@@ -18,6 +19,8 @@ class ViewNoteScreen extends StatefulWidget {
 }
 
 class _ViewNoteScreenState extends State<ViewNoteScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   Note _note;
   bool _isNewNote;
   PageMode _pageMode;
@@ -58,8 +61,15 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     // print(note.isNew);
     // print(_pageMode);
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(_isInEditMode ? AppStrings.editing : AppStrings.viewing),
+        leading: IconButton(
+          icon: Icon(LineIcons.arrowLeft),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         actions: <Widget>[
           PopupMenuButton(
             onSelected: _onMenuOptionSelected,
@@ -197,7 +207,7 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
     }
   }
 
-  /// Determines what to do when the back button is presses
+  /// Determines what to do when the back button is pressed
   /// It pops the screen if it returns false, and doesn't pop
   /// the screen if it returns true
   Future<bool> _onBackButtonPressed() async {
