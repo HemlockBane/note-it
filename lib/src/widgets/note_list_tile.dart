@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/utils/utils.dart';
+import 'package:note_it/src/widgets/theme.dart';
 
 class NoteListTile extends StatelessWidget {
   final Note note;
@@ -18,7 +17,13 @@ class NoteListTile extends StatelessWidget {
         onNoteTapped();
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 9.0),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          border: Border(
+            left: BorderSide(color: Colors.red, width: 5.0),
+          ),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -26,7 +31,12 @@ class NoteListTile extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 5),
               child: Text(
                 note.title,
-                style: TextStyle(fontSize: 18),
+                style: bodyText1Style(
+                  context,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             Container(
@@ -35,14 +45,24 @@ class NoteListTile extends StatelessWidget {
                 note.content,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 14),
+                style: bodyText1Style(
+                  context,
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               ),
             ),
             Container(
               margin: EdgeInsets.only(bottom: 5),
               child: Text(
                 '${beautifyDate(note.dateLastModified)} at ${beautifyTime(note.dateLastModified)}',
-                style: TextStyle(fontSize: 11),
+                style: bodyText1Style(
+                  context,
+                  fontSize: 12,
+                  color:
+                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             if (note.tagName.isNotEmpty)
@@ -51,8 +71,9 @@ class NoteListTile extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 7, vertical: 1),
                     decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(4))),
+                      color: Colors.black,
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    ),
                     child: Text(
                       note.tagName,
                       style: TextStyle(color: Colors.white),

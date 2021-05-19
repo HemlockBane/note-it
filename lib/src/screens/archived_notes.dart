@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/widgets/drawer.dart';
 import 'package:note_it/src/widgets/no_notes_info.dart';
-import 'package:note_it/src/widgets/note_list.dart';
+import 'package:note_it/src/widgets/note_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class ArchivedNotesScreen extends StatefulWidget {
@@ -15,14 +16,23 @@ class ArchivedNotesScreen extends StatefulWidget {
 }
 
 class _ArchivedNotesScreenState extends State<ArchivedNotesScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text(AppStrings.archivedNotes),
+          leading: IconButton(
+            icon: Icon(LineIcons.bars),
+            onPressed: () {
+              _scaffoldKey.currentState.openDrawer();
+            },
+          ),
         ),
-        drawer: AppDrawer(),
+        drawer: AppDrawer(selectedColor: Theme.of(context).colorScheme.onPrimary),
         body: Consumer<NoteNotifier>(
           builder: (context, noteNotifier, _) {
             print('rebuilding archived notes');

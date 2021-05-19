@@ -19,6 +19,9 @@ class PopupMenuOption {
   PopupMenuOption({this.value, this.label, this.iconData});
 }
 
+
+//TODO: Change icons to Line Icons
+
 List<PopupMenuOption> deletedNoteOptions = [
   PopupMenuOption(
       value: PopupMenuValue.hard_delete,
