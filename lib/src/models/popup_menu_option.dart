@@ -31,18 +31,18 @@ List<PopupMenuOption> deletedNoteOptions = [
       value: PopupMenuValue.restore, label: 'Restore', iconData: Icons.ac_unit),
 ];
 
-final popUpMenuOptions = [
-  PopupMenuOption(
-      value: PopupMenuValue.archive, label: 'Archive', iconData: Icons.ac_unit),
-  PopupMenuOption(
-      value: PopupMenuValue.unarchive,
-      label: 'Unarchive',
-      iconData: Icons.ac_unit),
-  PopupMenuOption(
-      value: PopupMenuValue.soft_delete,
-      label: 'Delete',
-      iconData: Icons.ac_unit),
-];
+// final popUpMenuOptions = [
+//   PopupMenuOption(
+//       value: PopupMenuValue.archive, label: 'Archive', iconData: Icons.ac_unit),
+//   PopupMenuOption(
+//       value: PopupMenuValue.unarchive,
+//       label: 'Unarchive',
+//       iconData: Icons.ac_unit),
+//   PopupMenuOption(
+//       value: PopupMenuValue.soft_delete,
+//       label: 'Delete',
+//       iconData: Icons.ac_unit),
+// ];
 
 List<PopupMenuOption> getMenuOptionsForNote({Note note}) {
   List<PopupMenuOption> menuOptions = [

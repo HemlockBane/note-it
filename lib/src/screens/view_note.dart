@@ -14,6 +14,7 @@ class ViewNoteScreen extends StatefulWidget {
   final bool isNewNote;
 
   ViewNoteScreen({this.note, this.isNewNote = false});
+
   @override
   _ViewNoteScreenState createState() => _ViewNoteScreenState();
 }
@@ -149,7 +150,8 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
       },
       controller: _contentController,
       focusNode: _contentFocusNode,
-      maxLines: null, // Makes text to wrap to next line
+      maxLines: null,
+      // Makes text to wrap to next line
       style: TextStyle(fontSize: 18),
       decoration: InputDecoration(
         hintText: 'Body',
@@ -164,8 +166,6 @@ class _ViewNoteScreenState extends State<ViewNoteScreen> {
   }
 
   void _onMenuOptionSelected(PopupMenuValue newValue) async {
-    print('selected option: $newValue');
-
     switch (newValue) {
       case PopupMenuValue.soft_delete:
         await _noteNotifier.editNote(_note.copyWith(isSoftDeleted: true));
