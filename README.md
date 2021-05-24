@@ -1,11 +1,30 @@
 # Note It
 
-A note-taking app built with Flutter
+Note It is a note-taking app that allows you to take notes and favourite notes.
 
-## Dependecies
-- date_format: ^1.0.8
-- provider: ^4.1.2
-- sqflite: ^1.3.0+2
+## Features
+- Add a note
+- Edit a note
+- Archive a note
+- Bookmark a note
+- Delete a note
+- Search notes (In progress)
+- Sync notes (Pending)
 
-## Installation
-With Flutter installed, clone the project and run `flutter run`  in the terminal
+### Screenshots
+Pending...
+
+## Getting Started
+
+### Prerequisites
+- Ensure that you have flutter installed and setup correctly
+
+### Dependencies
+- date_format
+- provider
+- sqflite
+
+### Installing the app
+- Clone the repo
+- Fetch dependencies: Run `flutter packages get` in the terminal
+- Install app: Run `flutter run`  in the terminal

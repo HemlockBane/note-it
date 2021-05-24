@@ -24,7 +24,7 @@ class NoteNotifier with ChangeNotifier {
       notes.where((note) => note.isBookmarked == true).toList();
 
   List<Note> get archivedNotes =>
-      _notes.where((note) => note.isArchived == true).toList();
+      _notes.where((note) => note.isArchived == true && note.isSoftDeleted == false).toList();
 
   List<Note> get deletedNotes =>
       _notes.where((note) => note.isSoftDeleted == true).toList();

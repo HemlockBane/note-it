@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
@@ -11,7 +13,6 @@ import 'package:note_it/src/widgets/drawer.dart';
 import 'package:provider/provider.dart';
 
 import 'all_notes.dart';
-
 
 class NotesScreen extends StatefulWidget {
   static final String routeName = 'notes';
@@ -46,15 +47,18 @@ class _NotesScreenState extends State<NotesScreen> {
     _noteNotifier = NoteNotifier.of(context);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         // drawer: AppDrawer(),
         body: tabs[_currentTabIndex],
         bottomNavigationBar: AppBottomNavigationBar(
+          selectedColor: Theme.of(context).iconTheme.color.withOpacity(0.9),
+          color: Theme.of(context).iconTheme.color.withOpacity(0.5),
           onTabSelected: _changeTab,
           items: [
             AppBottomNavigationBarItem(
-                iconData: Icons.book, text: AppStrings.all),
+                iconData: LineIcons.home, text: AppStrings.all),
             AppBottomNavigationBarItem(
-                iconData: Icons.star, text: AppStrings.bookmarks),
+                iconData: LineIcons.star, text: AppStrings.bookmarks),
             // AppBottomNavigationBarItem(iconData: Icons.label, text: 'Tags')
           ],
         ),

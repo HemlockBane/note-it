@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/notifiers/drawer_notifier.dart';
+import 'package:note_it/src/notifiers/theme_notifier.dart';
 import 'package:note_it/src/screens/archived_notes.dart';
 import 'package:note_it/src/screens/deleted_notes.dart';
 import 'package:note_it/src/screens/notes.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppDrawerTileItem {
   AppDrawerTileItem({this.title, this.iconData, this.destinationRoute});
@@ -16,43 +20,72 @@ class AppDrawerTileItem {
 final tileItems = [
   AppDrawerTileItem(
       title: 'Notes',
-      iconData: Icons.lightbulb_outline,
+      iconData: LineIcons.lightbulb,
       destinationRoute: NotesScreen.routeName),
   AppDrawerTileItem(
       title: 'Archived Notes',
-      iconData: Icons.archive,
+      iconData: LineIcons.archive,
       destinationRoute: ArchivedNotesScreen.routeName),
   AppDrawerTileItem(
       title: 'Deleted Notes',
-      iconData: Icons.delete,
+      iconData: LineIcons.trash,
       destinationRoute: DeletedNotesScreen.routeName)
 ];
 
 class AppDrawer extends StatefulWidget {
+  final Color selectedColor;
+  final Color unselectedColor;
+
+  AppDrawer(
+      {this.selectedColor = Colors.black, this.unselectedColor = Colors.grey});
+
   @override
   _AppDrawerState createState() => _AppDrawerState();
 }
 
 class _AppDrawerState extends State<AppDrawer> {
   DrawerNotifier _drawerNotifier;
-  Color _selectedColor = Colors.black;
-  Color _unselectedColor = Colors.grey;
+  ThemeNotifier _themeNotifier;
 
   @override
   Widget build(BuildContext context) {
     _drawerNotifier = DrawerNotifier.of(context);
+    _themeNotifier = ThemeNotifier.of(context);
 
     return SafeArea(
       child: Drawer(
-        child: Consumer<DrawerNotifier>(
-          builder: (context, drawer, child) {
-            return ListView(
-              children: <Widget>[
-                ..._buildDrawerListTiles(
-                    currentlySelectedIndex: drawer.currentlySelectedIndex)
-              ],
-            );
-          },
+        child: Container(
+          color: Theme.of(context).colorScheme.primary,
+          child: Consumer<DrawerNotifier>(
+            builder: (context, drawer, _) {
+      
+              return ListView(
+                children: <Widget>[
+                  ..._buildDrawerListTiles(
+                      currentlySelectedIndex: drawer.currentlySelectedIndex),
+                  Consumer<ThemeNotifier>(builder: (context, themeNotifier, _) {
+                    final isLightMode =
+                        themeNotifier.getThemeMode() == ThemeMode.light;
+
+                    final _isSwitchSelected = isLightMode ? false : true;
+
+                    return SwitchListTile(
+                      title: Text(_isSwitchSelected ? "Dark Mode" : "Light Mode"),
+                      value: _isSwitchSelected,
+                      onChanged: (bool isSwitchSelected) async {
+                        final themeOption = isSwitchSelected
+                            ? ThemeOption.dark
+                            : ThemeOption.light;
+                        _themeNotifier.updateThemeOption(themeOption);
+                        final prefs = await SharedPreferences.getInstance();
+                        prefs.setInt(AppStrings.themeIndex, themeOption.index);
+                      },
+                    );
+                  })
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -61,14 +94,16 @@ class _AppDrawerState extends State<AppDrawer> {
   _buildDrawerListTiles({int currentlySelectedIndex}) {
     return List.generate(tileItems.length, (int index) {
       final tileItem = tileItems[index];
-      Color color =
-          currentlySelectedIndex == index ? _selectedColor : _unselectedColor;
+      Color color = currentlySelectedIndex == index
+          ? widget.selectedColor
+          : widget.unselectedColor;
       return _buildDrawerListTile(
-          index: index,
-          title: tileItem.title,
-          iconData: tileItem.iconData,
-          destinationRoute: tileItem.destinationRoute,
-          color: color);
+        index: index,
+        title: tileItem.title,
+        iconData: tileItem.iconData,
+        destinationRoute: tileItem.destinationRoute,
+        color: color,
+      );
     });
   }
 

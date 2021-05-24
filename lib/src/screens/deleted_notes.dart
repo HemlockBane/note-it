@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:note_it/src/constants/app_strings.dart';
 import 'package:note_it/src/models/note.dart';
 import 'package:note_it/src/notifiers/note_notifier.dart';
 import 'package:note_it/src/screens/view_note.dart';
 import 'package:note_it/src/widgets/drawer.dart';
 import 'package:note_it/src/widgets/no_notes_info.dart';
-import 'package:note_it/src/widgets/note_list.dart';
+import 'package:note_it/src/widgets/note_list_tile.dart';
+import 'package:note_it/src/widgets/theme.dart';
 import 'package:provider/provider.dart';
 
 class DeletedNotesScreen extends StatefulWidget {
@@ -15,18 +17,27 @@ class DeletedNotesScreen extends StatefulWidget {
 }
 
 class _DeletedNotesScreenState extends State<DeletedNotesScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(AppStrings.deletedNotes),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(LineIcons.bars),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
-          IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+          IconButton(icon: Icon(LineIcons.search), onPressed: () {}),
+          IconButton(icon: Icon(LineIcons.verticalEllipsis), onPressed: () {}),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: AppDrawer(selectedColor: Theme.of(context).colorScheme.onPrimary),
       body: Consumer<NoteNotifier>(
         builder: (context, noteNotifier, _) {
           print('rebuilding deleted notes');

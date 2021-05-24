@@ -21,6 +21,7 @@ class NotesDBService {
   static Future<Database> _openDb() async {
     final databasesPath = await getDatabasesPath();
     final dbPath = path.join(databasesPath, dbName);
+    //TODO: Work on db migration. You might need to update schema when you add more db columns
     final db = openDatabase(dbPath, version: 1, onCreate: _createDB);
 
     return db;
