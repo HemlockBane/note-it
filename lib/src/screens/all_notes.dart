@@ -132,7 +132,9 @@ class NoteSearchDelegate extends SearchDelegate {
         // string.contains() returns true for an empty query. How??
         if (query.isNotEmpty) {
           notes
-              .where((note) => note.title.toLowerCase().contains(query))
+              .where((note) =>
+                  note.title.toLowerCase().contains(query) ||
+                  note.content.toLowerCase().contains(query))
               .toList();
         }
 
