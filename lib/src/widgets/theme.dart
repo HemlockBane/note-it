@@ -12,7 +12,7 @@ class AppTheme {
         onPrimary: Colors.black,
         secondary: Colors.black,
         onSecondary: Colors.white,
-        surface: Colors.white,
+        surface: Colors.black,
         onSurface: Colors.black,
         background: Colors.white,
         onBackground: Colors.black,
